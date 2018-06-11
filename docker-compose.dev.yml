@@ -1,0 +1,11 @@
+version: '3.6'
+services:
+  container-test:
+    build: .
+    image: ragedunicorn/container-test:1.0.0-stable
+    stdin_open: true
+    tty: true
+    entrypoint: /bin/sh
+    labels:
+      com.ragedunicorn.container-test.environment: "dev"
+      com.ragedunicorn.container-test.description: "Google Container Structure Test"
