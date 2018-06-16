@@ -60,6 +60,8 @@ COMPOSE_CONVERT_WINDOWS_PATHS=1
 $Env:COMPOSE_CONVERT_WINDOWS_PATHS=1
 ```
 
+Also note that host volumes need to be enabled in docker an can be tricky sometimes. See [docker bind volumes](https://docs.docker.com/storage/bind-mounts/) for more info.
+
 #### No such image
 
 Also make sure to pull or create the image to be tested locally before running the tests otherwise the following error might occur.
