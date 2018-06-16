@@ -55,7 +55,7 @@ Encountered errors while bringing up the project.
 It can be solved by enabling converting of windows paths in docker compose by setting the following environment variable.
 
 ```
-COMPOSE_CONVERT_WINDOWS_PATHS=1
+export COMPOSE_CONVERT_WINDOWS_PATHS=1
 
 # Powershell
 $Env:COMPOSE_CONVERT_WINDOWS_PATHS=1
