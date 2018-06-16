@@ -1,0 +1,20 @@
+version: '3.6'
+services:
+  container-test:
+    image: ragedunicorn/container-test:1.0.0-stable
+    volumes:
+        - ./test/:/test
+        - /var/run/docker.sock:/var/run/docker.sock
+    command: ["--image", "[image_to_test]", "--config", "/test/[application_test].yml", "--pull"]
+    labels:
+      com.ragedunicorn.container-test.environment: "dev"
+      com.ragedunicorn.container-test.description: "Google Container Structure Test"
+  container-test-metadata:
+    image: ragedunicorn/container-test:1.0.0-stable
+    volumes:
+        - ./test/:/test
+        - /var/run/docker.sock:/var/run/docker.sock
+    command: ["--image", "[image_to_test]", "--config", "/test/[application_metadata_test].yml", "--pull"]
+    labels:
+      com.ragedunicorn.container-test.environment: "dev"
+      com.ragedunicorn.container-test.description: "Google Container Structure Test"
