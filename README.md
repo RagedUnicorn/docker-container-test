@@ -13,7 +13,8 @@ This image can be used as a base to run container structure tests on other image
 | Testname | Description                                                                                                                |
 | -------- | -------------------------------------------------------------------------------------------------------------------------- |
 | [application]_metadata_test.yml  | A set of tests to check for certain expected entries in the Dockerfile such as ports, volumes etc. |
-| [application]_test.yml  | Basic tests for the image such as file existence checks                                                     |
+| [application]_command_test.yml   | Basic tests for executing a command related to the image                                           |
+| [application]_test.yml           | Basic tests for the image such as file existence checks                                            |
 
 Projects can then either run the tests by hand or create a specific docker compose setup to execute all tests. As a convention this configuration should be named `docker-compose.test.yml`. An example that can be used as a template can be found in this repository (`docker-compose.test.template`). Only the image to be tested and the tests itself need to be changed if the recommended conventions of this readme are followed.
 
