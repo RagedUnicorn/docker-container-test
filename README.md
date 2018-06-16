@@ -124,6 +124,14 @@ docker-compose -f docker-compose.dev.yml up -d
 
 By default the container will be setup to keep `stdin_open` open and allocating a pseudo `tty`. This allows for connecting to a shell and work on the container. A shell can be opened inside the container with `docker attach [container-id]`. From there tests can be run manually for further insight of what is happening in the container.
 
+## Links
+
+Google Container Structure Tests repository
+- https://github.com/GoogleContainerTools/container-structure-test
+
+Alpine packages database
+- https://pkgs.alpinelinux.org/packages
+
 ## License
 
 Copyright (C) 2018 Michael Wiesendanger
