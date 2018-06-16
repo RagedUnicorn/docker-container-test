@@ -23,18 +23,17 @@ if [ $? -eq 0 ]; then
   # start container
   docker start "${DOCKER_DOCKER_TEST_NAME}"
 else
+  # For a unix like system the docker socket path might need to be change to:
+  # /var/run/docker.sock:/var/run/docker.sock
   ## run image:
-  # -p expose port
   # -d run in detached mode
   # -i Keep STDIN open even if not attached
   # -t Allocate a pseudo-tty
+  # -v mount/bind volume
   # --name define a name for the container(optional)
-
-  #TODO hardcoded :/
   DOCKER_DOCKER_TEST_ID=$(docker run \
   -dit \
   -v //var/run/docker.sock:/var/run/docker.sock \
-  -v C:/dev/docker/docker-tomcat/test/:/test \
   --name "${DOCKER_DOCKER_TEST_NAME}" "${DOCKER_DOCKER_TEST_TAG}")
 fi
 
