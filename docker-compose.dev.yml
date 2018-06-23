@@ -2,7 +2,7 @@ version: '3.6'
 services:
   container-test:
     build: .
-    image: ragedunicorn/container-test:1.0.0-stable
+    image: ragedunicorn/container-test:1.0.0-dev
     stdin_open: true
     tty: true
     entrypoint: /bin/sh
