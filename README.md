@@ -22,7 +22,19 @@ After that the tests can be run by starting the services
 
 `docker-compose -f docker-compose.test.yml up`
 
-**Note:** using -d option for docker-compose is not recommende in this case. Otherwise the logs with the results of the tests need to be grabbed manually in each container. Without the -d option the result will already be displayed.
+**Note:** using -d option for docker-compose is not recommended in this case. Otherwise the logs with the results of the tests need to be grabbed manually in each container. Without the -d option the result will already be displayed.
+
+
+Tests can also be run separate by starting single services in `docker-compose.test.yml`
+
+```
+# basic file existence tests
+docker-compose -f docker-compose.test.yml up container-test
+# command tests
+docker-compose -f docker-compose.test.yml up container-test-command
+# metadata tests
+docker-compose -f docker-compose.test.yml up container-test-metadata
+```
 
 Instead of using a docker-compose file the tests can be run with docker directly.
 
