@@ -5,7 +5,7 @@ services:
     volumes:
         - ./test/:/test
         - /var/run/docker.sock:/var/run/docker.sock
-    command: ["--image", "[image_to_test]", "--config", "/test/[application_test].yml", "--pull"]
+    command: ["--image", "[image_to_test]", "--config", "/test/[application_test].yml"]
     labels:
       com.ragedunicorn.container-test.environment: "dev"
       com.ragedunicorn.container-test.description: "Google Container Structure Test"
@@ -14,7 +14,7 @@ services:
     volumes:
         - ./test/:/test
         - /var/run/docker.sock:/var/run/docker.sock
-    command: ["--image", "[image_to_test]", "--config", "/test/[application_metadata_test].yml", "--pull"]
+    command: ["--image", "[image_to_test]", "--config", "/test/[application_metadata_test].yml"]
     labels:
       com.ragedunicorn.container-test.environment: "dev"
       com.ragedunicorn.container-test.description: "Google Container Structure Test"
@@ -23,7 +23,7 @@ services:
     volumes:
         - ./test/:/test
         - /var/run/docker.sock:/var/run/docker.sock
-    command: ["--image", "[image_to_test]", "--config", "/test/[application_command_test].yml", "--pull"]
+    command: ["--image", "[image_to_test]", "--config", "/test/[application_command_test].yml"]
     labels:
       com.ragedunicorn.container-test.environment: "dev"
       com.ragedunicorn.container-test.description: "Google Container Structure Test"
