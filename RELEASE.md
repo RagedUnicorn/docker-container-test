@@ -3,8 +3,7 @@
 > This document explains how a new release is created for this docker container
 
 * Update docker-compose files
-  * Update docker-compose.dev.yml image to new version
-  * Update docker-compose.yml image to new version
+  * Update .env image tag version
 * Create a new git tag and push it
   * `git tag vx.x.x`
   * `git push origin --tags`
