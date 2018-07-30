@@ -4,7 +4,7 @@
 
 ## Version
 
-* Google Container Structure Test v1.2.2
+* Google Container Structure Test v1.4.0
 
 ## Using the image
 
