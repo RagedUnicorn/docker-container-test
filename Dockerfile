@@ -12,7 +12,10 @@ ENV \
   CONTAINER_STRUCTURE_VERSION=v1.2.2
 
 RUN \
-  wget -O /usr/bin/container-structure-test https://storage.googleapis.com/container-structure-test/"${CONTAINER_STRUCTURE_VERSION}"/container-structure-test-linux-amd64 && \
+  if ! wget -O /usr/bin/container-structure-test https://storage.googleapis.com/container-structure-test/"${CONTAINER_STRUCTURE_VERSION}"/container-structure-test-linux-amd64; then \
+    echo >&2 "Error: Failed to download Container structure test binary"; \
+    exit 1; \
+  fi && \
   chmod +x /usr/bin/container-structure-test
 
 ENTRYPOINT ["container-structure-test", "test"]
