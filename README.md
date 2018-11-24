@@ -88,7 +88,7 @@ Using the template the image to test will be automatically pulled from the repos
 
 #### Tests Blocked
 
-Google Container Structure Test is overriding the entrypoint by default to prevent containers that run blocking processes from blocking the tests. If for an example a docker image starts a webserver the tests cannot be run because that process is blocking the tests. Usually this works out with GCST overriding the entrypoint. However if it does not keep this in mind and make sure process is blocking the running of the tests.
+Google Container Structure Test is overriding the entrypoint by default to prevent containers that run blocking processes from blocking the tests. If for an example a docker image starts a webserver the tests cannot be run because that process is blocking the tests. Usually this works out with GCST overriding the entrypoint. However if it does not keep this in mind and make sure no process is blocking the running of the tests.
 
 ## Dockery
 
