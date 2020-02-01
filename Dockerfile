@@ -1,4 +1,4 @@
-FROM docker:18.09.3
+FROM docker:19.03.5
 
 LABEL com.ragedunicorn.maintainer="Michael Wiesendanger <michael.wiesendanger@gmail.com>"
 
