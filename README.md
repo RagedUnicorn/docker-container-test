@@ -4,7 +4,7 @@
 
 ## Version
 
-* Google Container Structure Test v1.8.0
+* Google Container Structure Test v1.14.0
 
 ## Using the image
 
@@ -22,7 +22,7 @@ After that the tests can be run by starting the services
 
 `docker-compose -f docker-compose.test.yml up`
 
-**Note:** using -d option for docker-compose is not recommended in this case. Otherwise the logs with the results of the tests need to be grabbed manually in each container. Without the -d option the result will already be displayed.
+**Note:** using -d option for docker-compose is not recommended in this case. Otherwise, the logs with the results of the tests need to be grabbed manually in each container. Without the -d option the result will already be displayed.
 
 
 Tests can also be run separate by starting single services in `docker-compose.test.yml`
@@ -73,7 +73,7 @@ export COMPOSE_CONVERT_WINDOWS_PATHS=1
 $Env:COMPOSE_CONVERT_WINDOWS_PATHS=1
 ```
 
-Also note that host volumes need to be enabled in docker an can be tricky sometimes. See [docker bind volumes](https://docs.docker.com/storage/bind-mounts/) for more info.
+Also note that host volumes need to be enabled in docker and can be tricky sometimes. See [docker bind volumes](https://docs.docker.com/storage/bind-mounts/) for more info.
 
 #### No such image
 
@@ -88,7 +88,7 @@ Using the template the image to test will be automatically pulled from the repos
 
 #### Tests Blocked
 
-Google Container Structure Test is overriding the entrypoint by default to prevent containers that run blocking processes from blocking the tests. If for an example a docker image starts a webserver the tests cannot be run because that process is blocking the tests. Usually this works out with GCST overriding the entrypoint. However if it does not keep this in mind and make sure no process is blocking the running of the tests.
+Google Container Structure Test is overriding the entrypoint by default to prevent containers that run blocking processes from blocking the tests. If for an example a docker image starts a webserver the tests cannot be run because that process is blocking the tests. Usually this works out with GCST overriding the entrypoint. However, if it does not keep this in mind and make sure no process is blocking the running of the tests.
 
 ## Dockery
 
@@ -135,15 +135,12 @@ configuration.
 docker-compose -f docker-compose.dev.yml up -d
 ```
 
-By default the container will be setup to keep `stdin_open` open and allocating a pseudo `tty`. This allows for connecting to a shell and work on the container. A shell can be opened inside the container with `docker attach [container-id]`. From there tests can be run manually for further insight of what is happening in the container.
+By default, the container will be setup to keep `stdin` open and allocating a pseudo `tty`. This allows for connecting to a shell and work on the container. A shell can be opened inside the container with `docker attach [container-id]`. From there tests can be run manually for further insight of what is happening in the container.
 
 ## Links
 
 Google Container Structure Tests repository
 - https://github.com/GoogleContainerTools/container-structure-test
-
-Alpine packages database
-- https://pkgs.alpinelinux.org/packages
 
 ## License
 
