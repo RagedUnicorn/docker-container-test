@@ -25,3 +25,9 @@
 ehthumbs.db
 Icon
 Thumbs.db
+
+# Idea
+.idea/
+*.iml
+*.iws
+*.ipr
