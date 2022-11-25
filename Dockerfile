@@ -1,4 +1,4 @@
-FROM docker:19.03.5
+FROM docker:20.10.21
 
 LABEL com.ragedunicorn.maintainer="Michael Wiesendanger <michael.wiesendanger@gmail.com>"
 
@@ -9,7 +9,7 @@ LABEL com.ragedunicorn.maintainer="Michael Wiesendanger <michael.wiesendanger@gm
 # \____/\____/_/ /_/\__/\__,_/_/_/ /_/\___/_/       /_/  \___/____/\__/
 
 ENV \
-  CONTAINER_STRUCTURE_VERSION=v1.8.0
+  CONTAINER_STRUCTURE_VERSION=v1.14.0
 
 RUN \
   if ! wget -O /usr/bin/container-structure-test https://storage.googleapis.com/container-structure-test/"${CONTAINER_STRUCTURE_VERSION}"/container-structure-test-linux-amd64; then \

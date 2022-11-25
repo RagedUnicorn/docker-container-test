@@ -7,7 +7,7 @@
 * Create a new git tag and push it
   * `git tag vx.x.x`
   * `git push origin --tags`
-* Draft new Github release with description
+* Draft new GitHub release with description
   * Title should be the version e.g. vx.x.x
   * Short description of what was added newly
 * Update docker hub
