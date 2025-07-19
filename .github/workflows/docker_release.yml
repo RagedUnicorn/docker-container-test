@@ -27,7 +27,7 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Run Container Structure Tests
         run: |
-          docker-compose -f docker-compose.test.yml run --rm test-all
+          docker compose -f docker-compose.test.yml run --rm test-all
 
   build-and-push:
     needs: test

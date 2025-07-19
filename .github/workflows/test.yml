@@ -32,7 +32,7 @@ jobs:
       - name: Run Container Structure Tests on Alpine
         run: |
           echo "Running Container Structure Tests on Alpine Linux..."
-          docker-compose -f docker-compose.test.yml run --rm test-all
+          docker compose -f docker-compose.test.yml run --rm test-all
 
       - name: Test basic Container Structure Test functionality
         run: |
