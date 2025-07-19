@@ -29,152 +29,24 @@ docker build -t ragedunicorn/container-test .
 
 ## Usage
 
-The container uses Container Structure Test as the entrypoint, so test parameters can be passed directly to the `docker run` command.
+The container uses Container Structure Test as the entrypoint, allowing you to validate Docker images by testing their structure, contents, and behavior.
 
-### Basic Usage
+### Quick Start
 
 ```bash
-# Using latest version
+# Test an image with a single test file
 docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
-  ragedunicorn/container-test:latest --image [image-to-test] --config /test/[test-file].yml
+  ragedunicorn/container-test:latest --image nginx:latest --config /test/nginx_test.yml
 
-# Using specific version
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
-  ragedunicorn/container-test:1.19.3-alpine3.22.1-1 --image [image-to-test] --config /test/[test-file].yml
+# Run all tests using Docker Compose
+docker-compose -f docker-compose.test.yml run test-all
 ```
 
-### Test File Structure
+For comprehensive testing documentation including examples, troubleshooting, and CI/CD integration, see [TEST.md](TEST.md).
 
-Container Structure Test supports three types of tests:
+## Development
 
-| Test Type                         | Description                                                       |
-|-----------------------------------|-------------------------------------------------------------------|
-| `[application]_test.yml`          | Basic tests for file existence and content validation             |
-| `[application]_command_test.yml`  | Tests for command execution and output validation                 |
-| `[application]_metadata_test.yml` | Tests for Dockerfile metadata like labels, exposed ports, volumes |
-
-### Examples
-
-#### Test File Existence
-
-```yaml
-# test/app_test.yml
-schemaVersion: 2.0.0
-
-fileExistenceTests:
-  - name: 'App binary exists'
-    path: '/usr/local/bin/app'
-    shouldExist: true
-  - name: 'Config directory exists'
-    path: '/etc/app'
-    shouldExist: true
-```
-
-#### Test Command Output
-
-```yaml
-# test/app_command_test.yml
-schemaVersion: 2.0.0
-
-commandTests:
-  - name: 'App version'
-    command: 'app'
-    args: ['--version']
-    expectedOutput: ['v1.0.0']
-    exitCode: 0
-```
-
-#### Test Metadata
-
-```yaml
-# test/app_metadata_test.yml
-schemaVersion: 2.0.0
-
-metadataTest:
-  labels:
-    - key: 'maintainer'
-      value: 'example@email.com'
-  exposedPorts: ['8080']
-  volumes: ['/data']
-```
-
-## Docker Compose Usage
-
-### Using the Template
-
-1. Copy `docker-compose.test.template` to `docker-compose.test.yml`
-2. Replace `[image_to_test]` with your image name
-3. Update test file paths as needed
-
-### Running Tests
-
-```bash
-# Run all tests
-docker-compose -f docker-compose.test.yml up
-
-# Run specific test suites
-docker-compose -f docker-compose.test.yml up container-test
-docker-compose -f docker-compose.test.yml up container-test-command
-docker-compose -f docker-compose.test.yml up container-test-metadata
-```
-
-### Platform-Specific Notes
-
-#### Windows
-
-```shell
-docker run -v //var/run/docker.sock:/var/run/docker.sock -v ${PWD}/test:/test \
-  ragedunicorn/container-test:1.19.3-alpine3.22.1-1 --image [image] --config /test/[test].yml
-```
-
-#### Unix/Linux/macOS
-
-```shell
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/test:/test \
-  ragedunicorn/container-test:1.19.3-alpine3.22.1-1 --image [image] --config /test/[test].yml
-```
-
-## Common Issues
-
-### Image Not Found
-
-Ensure the image to test is available locally:
-```bash
-docker pull [image-to-test]
-```
-
-Or use the `--pull` flag to automatically pull the image:
-```bash
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
-  ragedunicorn/container-test:latest --pull --image [image] --config /test/[test].yml
-```
-
-### Tests Blocked by Running Processes
-
-Container Structure Test overrides the entrypoint to prevent blocking processes. If tests fail due to running services, ensure your test configuration accounts for this behavior.
-
-### Docker Socket Permission
-
-On some systems, you may need to run with appropriate permissions to access the Docker socket:
-```bash
-sudo docker run -v /var/run/docker.sock:/var/run/docker.sock ...
-```
-
-## Development Mode
-
-For testing and debugging, use the development compose file:
-
-```bash
-# Build the image locally
-docker-compose -f docker-compose.dev.yml build
-
-# Run in development mode (interactive shell)
-docker-compose -f docker-compose.dev.yml run --rm container-test-dev
-
-# Inside the container, you can run container-structure-test manually
-container-structure-test --help
-container-structure-test test --image alpine:latest --config /test/example_test.yml
-```
+For information about developing and contributing to this project, see [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## Versioning
 
@@ -187,6 +59,15 @@ Examples:
 - `latest` - Most recent stable release
 
 For detailed release process and versioning guidelines, see [RELEASE.md](RELEASE.md).
+
+## Automated Dependency Updates
+
+This project uses [Renovate](https://docs.renovatebot.com/) to automatically check for updates to:
+- Alpine Linux base image version (all major, minor, and patch updates)
+- Container Structure Test version
+
+Renovate runs weekly (every Monday) and creates pull requests when updates are available. The configuration tracks 
+both Alpine Linux and Container Structure Test releases, creating separate pull requests for each update.
 
 ## Links
 
