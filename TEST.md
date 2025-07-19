@@ -4,15 +4,41 @@ This document describes how to test Docker images using the Container Structure 
 
 ## Quick Start
 
+### Testing the Container Structure Test Image Itself
+
+The provided `docker-compose.test.yml` is configured to test the container-test image itself:
+
 ```bash
-# Run all tests
-docker-compose -f docker-compose.test.yml run test-all
+# Run all self-tests
+docker compose -f docker-compose.test.yml run test-all
 
 # Run individual test suites
-docker-compose -f docker-compose.test.yml up container-test          # File structure tests
-docker-compose -f docker-compose.test.yml up container-test-command  # Command execution tests
-docker-compose -f docker-compose.test.yml up container-test-metadata # Metadata validation tests
+docker compose -f docker-compose.test.yml up container-test          # File structure tests
+docker compose -f docker-compose.test.yml up container-test-command  # Command execution tests
+docker compose -f docker-compose.test.yml up container-test-metadata # Metadata validation tests
 ```
+
+### Testing Other Images
+
+To test your own images, use the template or run directly:
+
+```bash
+# Using the template (replace the existing docker-compose.test.yml)
+cp docker-compose.test.template docker-compose.test.yml
+# Edit the file to replace placeholders with your image and test names
+docker compose -f docker-compose.test.yml run test-all
+
+# Or run directly
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
+  ragedunicorn/container-test:latest --image [your-image] --config /test/[your-test].yml
+```
+
+## Test Organization
+
+The test directory contains two types of tests:
+
+1. **Self-tests** (`container_test_*.yml`) - Tests for the container-test image itself
+2. **Example tests** (`test/example/alpine_*.yml`) - Examples for testing other images
 
 ## Test Structure
 
@@ -91,42 +117,156 @@ metadataTest:
 ### Prerequisites
 
 1. Docker must be installed and running
-2. Docker socket must be accessible
-3. Test files must be present in the `test/` directory
+2. Build the Container Structure Test image locally before testing
 
-### Basic Usage
+### Important: Always Test Local Builds
 
-Test your own image:
+**⚠️ Always build and test locally to ensure consistency:**
 
 ```bash
-# Using latest Container Structure Test
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
-  ragedunicorn/container-test:latest --image [image-to-test] --config /test/[test-file].yml
+# Build the image locally with a test tag
+docker build -t ragedunicorn/container-test:test .
+```
 
-# Using specific version
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
-  ragedunicorn/container-test:1.19.3-alpine3.22.1-1 --image [image-to-test] --config /test/[test-file].yml
+**Linux/macOS:**
+```bash
+# Run tests against your local build
+CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
+```
+
+**Windows (PowerShell):**
+```powershell
+# Run tests against your local build
+$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+```
+
+**Why local testing is important:**
+- Remote images (Docker Hub, GHCR) may have different labels due to CI/CD overrides
+- Ensures you're testing exactly what you built
+- Avoids false positives/negatives from version mismatches
+- Guarantees consistent test results
+
+**Never pull remote images for testing:**
+
+**❌ DON'T DO THIS - may have different labels/settings:**
+```bash
+docker pull ragedunicorn/container-test:latest
+docker compose -f docker-compose.test.yml run test-all
+```
+
+**✅ DO THIS - test your local build:**
+
+**Linux/macOS:**
+```bash
+docker build -t ragedunicorn/container-test:test .
+CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
+```
+
+**Windows (PowerShell):**
+```powershell
+docker build -t ragedunicorn/container-test:test .
+$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+```
+
+### Test Execution
+
+Run all tests against your local build:
+
+**Linux/macOS:**
+```bash
+# Ensure you've built locally first!
+CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
+```
+
+**Windows (PowerShell):**
+```powershell
+# Ensure you've built locally first!
+$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+```
+
+**Windows (Command Prompt):**
+```cmd
+# Ensure you've built locally first!
+set CONTAINER_STRUCTURE_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
+```
+
+Run specific test categories:
+
+**Linux/macOS:**
+```bash
+# File structure tests
+CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test
+
+# Command execution tests
+CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
+
+# Metadata and label tests
+CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata
+```
+
+**Windows (PowerShell):**
+```powershell
+# File structure tests
+$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test
+
+# Command execution tests
+$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
+
+# Metadata and label tests
+$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-metadata
+```
+
+### Testing Different Versions
+
+When testing different versions, always build locally first:
+
+```bash
+# Build a specific version locally
+docker build -t ragedunicorn/container-test:1.19.3-alpine3.22.1-1 .
+```
+
+**Linux/macOS:**
+```bash
+# Test that specific version
+CONTAINER_STRUCTURE_TEST_VERSION=1.19.3-alpine3.22.1-1 docker compose -f docker-compose.test.yml run test-all
+```
+
+**Windows (PowerShell):**
+```powershell
+# Test that specific version
+$env:CONTAINER_STRUCTURE_TEST_VERSION="1.19.3-alpine3.22.1-1"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ### Using Docker Compose
 
-1. Copy `docker-compose.test.template` to `docker-compose.test.yml`
-2. Replace placeholders:
-   - `[image_to_test]` with your image name
-   - `[application]` with your application name
-   - Update test file paths as needed
+#### For Testing Your Own Images
 
-3. Run tests:
+1. Copy `docker-compose.test.template` to replace `docker-compose.test.yml`
+2. Replace placeholders:
+   - `[image_to_test]` with your image name (e.g., `myapp:latest`)
+   - `[application]` with your application name (e.g., `myapp`)
+   - `[application_test]` with your test file name (e.g., `myapp_test`)
+   - `[application_metadata_test]` with your metadata test file name (e.g., `myapp_metadata_test`)
+   - `[application_command_test]` with your command test file name (e.g., `myapp_command_test`)
+3. Create corresponding test files in the `test/` directory
+4. Run the tests:
 
 ```bash
 # Run all tests sequentially
-docker-compose -f docker-compose.test.yml run test-all
+docker compose -f docker-compose.test.yml run test-all
 
 # Run specific test suites
-docker-compose -f docker-compose.test.yml up container-test
-docker-compose -f docker-compose.test.yml up container-test-command
-docker-compose -f docker-compose.test.yml up container-test-metadata
+docker compose -f docker-compose.test.yml up container-test
+docker compose -f docker-compose.test.yml up container-test-command
+docker compose -f docker-compose.test.yml up container-test-metadata
 ```
+
+#### Using the Existing docker-compose.test.yml
+
+The provided `docker-compose.test.yml` is pre-configured to test the container-test image itself using:
+- `container_test_test.yml` - File structure tests
+- `container_test_command_test.yml` - Command execution tests
+- `container_test_metadata_test.yml` - Metadata validation tests
 
 ### Platform-Specific Notes
 
@@ -180,15 +320,50 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
   --output junit --test-report /test/report.xml
 ```
 
-## Example Test Suite
+## Example Test Suites
 
-The `test/example/` directory contains a complete test suite for Alpine Linux:
+### Container Structure Test Self-Tests
+
+The `test/` directory contains tests for the container-test image itself:
+
+- `container_test_test.yml` - Tests for Container Structure Test binary and files
+- `container_test_command_test.yml` - Tests for Container Structure Test command execution
+- `container_test_metadata_test.yml` - Tests for container-test image metadata
+
+### Alpine Linux Example Tests
+
+The `test/example/` directory contains a complete test suite for Alpine Linux that serves as a template:
 
 - `alpine_test.yml` - Tests for Alpine base system files
 - `alpine_command_test.yml` - Tests for Alpine commands and package manager
 - `alpine_metadata_test.yml` - Tests for Alpine image metadata
 
-## Troubleshooting
+These Alpine tests demonstrate how to test any Docker image and can be used as templates for your own tests.
+
+## Troubleshooting Test Failures
+
+### Metadata Test Failures
+
+**Common causes:**
+
+1. **Testing remote images instead of local builds**
+   - Remote images (Docker Hub, GHCR) have labels overridden by CI/CD
+   - Always test your local builds with `CONTAINER_STRUCTURE_TEST_VERSION=test`
+
+2. **Label value mismatches**
+   - CI/CD systems may capitalize values (e.g., "RagedUnicorn" vs "ragedunicorn")
+   - GitHub Actions may override labels during build
+   - Docker Hub automated builds may set different values
+
+3. **Version-specific labels**
+   - The `org.opencontainers.image.version` label changes with each build
+   - Build date labels are dynamic
+
+**Solution:** Always build and test locally before pushing:
+```bash
+docker build -t ragedunicorn/container-test:test .
+CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
+```
 
 ### Image Not Found
 
@@ -238,10 +413,10 @@ For testing and debugging Container Structure Test itself:
 
 ```bash
 # Build the image locally
-docker-compose -f docker-compose.dev.yml build
+docker compose -f docker-compose.dev.yml build
 
 # Run in development mode (interactive shell)
-docker-compose -f docker-compose.dev.yml run --rm container-test-dev
+docker compose -f docker-compose.dev.yml run --rm container-test-dev
 
 # Inside the container, you can run container-structure-test manually
 container-structure-test --help

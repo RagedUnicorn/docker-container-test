@@ -1,0 +1,13 @@
+schemaVersion: 2.0.0
+
+commandTests:
+  - name: 'Container Structure Test version'
+    command: 'container-structure-test'
+    args: ['version']
+    expectedOutput: ['1.19.3']
+    exitCode: 0
+  - name: 'Container Structure Test help'
+    command: 'container-structure-test'
+    args: ['--help']
+    expectedOutput: ['container-structure-test provides a powerful framework']
+    exitCode: 0

@@ -3,8 +3,8 @@
 # This file is used for building and testing the Container Test image locally
 #
 # Usage:
-#   docker-compose -f docker-compose.dev.yml build
-#   docker-compose -f docker-compose.dev.yml run --rm container-test-dev
+#   docker compose -f docker-compose.dev.yml build
+#   docker compose -f docker-compose.dev.yml run --rm container-test-dev
 #
 # This will drop you into a shell where you can manually run container-structure-test commands
 

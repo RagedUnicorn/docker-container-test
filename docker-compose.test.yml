@@ -1,47 +1,53 @@
 services:
   container-test:
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-test}
     volumes:
-        - ./test/example/:/test
-        - /var/run/docker.sock:/var/run/docker.sock
-    command: ["--pull", "--image", "alpine:3.22.1", "--config", "/test/alpine_test.yml"]
+      - ./test/:/test:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["--image", "ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-test}", "--config", "/test/container_test_test.yml"]
     labels:
       org.opencontainers.image.title: "Container Structure Test - Basic Tests"
       org.opencontainers.image.description: "Running basic file existence and content tests"
       org.opencontainers.image.vendor: "ragedunicorn"
-  container-test-metadata:
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
-    volumes:
-        - ./test/example/:/test
-        - /var/run/docker.sock:/var/run/docker.sock
-    command: ["--pull", "--image", "alpine:3.22.1", "--config", "/test/alpine_metadata_test.yml"]
-    labels:
-      org.opencontainers.image.title: "Container Structure Test - Metadata Tests"
-      org.opencontainers.image.description: "Running Docker metadata validation tests"
-      org.opencontainers.image.vendor: "ragedunicorn"
+
   container-test-command:
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-test}
     volumes:
-        - ./test/example/:/test
-        - /var/run/docker.sock:/var/run/docker.sock
-    command: ["--pull", "--image", "alpine:3.22.1", "--config", "/test/alpine_command_test.yml"]
+      - ./test/:/test:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["--image", "ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-test}", "--config", "/test/container_test_command_test.yml"]
     labels:
       org.opencontainers.image.title: "Container Structure Test - Command Tests"
       org.opencontainers.image.description: "Running command execution and output tests"
       org.opencontainers.image.vendor: "ragedunicorn"
+
+  container-test-metadata:
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-test}
+    volumes:
+      - ./test/:/test:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["--image", "ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-test}", "--config", "/test/container_test_metadata_test.yml"]
+    labels:
+      org.opencontainers.image.title: "Container Structure Test - Metadata Tests"
+      org.opencontainers.image.description: "Running Docker metadata validation tests"
+      org.opencontainers.image.vendor: "ragedunicorn"
+
   # Run all tests sequentially
   test-all:
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-test}
     volumes:
-      - ./test/example/:/test:ro
+      - ./test/:/test:ro
       - /var/run/docker.sock:/var/run/docker.sock
     entrypoint: /bin/sh
     command: >
-      -c "echo 'Running all Container Structure Tests for Alpine...' &&
-          container-structure-test test --pull --image alpine:3.22.1 --config /test/alpine_test.yml &&
+      -c "echo 'Running Container Structure Tests on the container-test image itself...' &&
+          echo '1. Testing file structure...' &&
+          container-structure-test test --image ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-test} --config /test/container_test_test.yml &&
           echo '✓ File structure tests passed' &&
-          container-structure-test test --pull --image alpine:3.22.1 --config /test/alpine_command_test.yml &&
+          echo '2. Testing command execution...' &&
+          container-structure-test test --image ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-test} --config /test/container_test_command_test.yml &&
           echo '✓ Command execution tests passed' &&
-          container-structure-test test --pull --image alpine:3.22.1 --config /test/alpine_metadata_test.yml &&
+          echo '3. Testing metadata...' &&
+          container-structure-test test --image ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-test} --config /test/container_test_metadata_test.yml &&
           echo '✓ Metadata validation tests passed' &&
-          echo && echo '✅ All Alpine container tests completed successfully!'"
+          echo && echo '✅ All container-test image tests completed successfully!'"

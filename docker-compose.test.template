@@ -1,4 +1,25 @@
+# Docker Compose template for testing your Docker images with Container Structure Test
+#
+# Usage:
+# 1. Copy this file: cp docker-compose.test.template docker-compose.myapp.yml
+# 2. Replace all placeholders:
+#    - [image_to_test] → your image name (e.g., myapp:latest, nginx:1.25, postgres:16-alpine)
+#    - [application] → your application name (e.g., myapp, nginx, postgres)
+#    - [application_test] → your test file name without .yml (e.g., myapp_test, nginx_test)
+#    - [application_command_test] → command test file name (e.g., myapp_command_test)
+#    - [application_metadata_test] → metadata test file name (e.g., myapp_metadata_test)
+# 3. Create test files in the test/ directory matching the names above
+# 4. Run tests: docker compose -f docker-compose.myapp.yml run test-all
+#
+# Example replacements for testing nginx:
+#   [image_to_test] → nginx:latest
+#   [application] → nginx
+#   [application_test] → nginx_test
+#   [application_command_test] → nginx_command_test
+#   [application_metadata_test] → nginx_metadata_test
+
 services:
+  # File structure validation tests
   container-test:
     image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     volumes:
@@ -9,6 +30,7 @@ services:
       org.opencontainers.image.title: "Container Structure Test - Basic Tests"
       org.opencontainers.image.description: "Running container structure validation tests"
       org.opencontainers.image.vendor: "ragedunicorn"
+  # Docker metadata validation tests
   container-test-metadata:
     image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     volumes:
@@ -16,9 +38,11 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
     command: ["--image", "[image_to_test]", "--config", "/test/[application_metadata_test].yml"]
     labels:
-      org.opencontainers.image.title: "Container Structure Test - Basic Tests"
-      org.opencontainers.image.description: "Running container structure validation tests"
+      org.opencontainers.image.title: "Container Structure Test - Metadata Tests"
+      org.opencontainers.image.description: "Running Docker metadata validation tests"
       org.opencontainers.image.vendor: "ragedunicorn"
+  
+  # Command execution and output tests
   container-test-command:
     image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     volumes:
@@ -26,10 +50,11 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
     command: ["--image", "[image_to_test]", "--config", "/test/[application_command_test].yml"]
     labels:
-      org.opencontainers.image.title: "Container Structure Test - Basic Tests"
-      org.opencontainers.image.description: "Running container structure validation tests"
+      org.opencontainers.image.title: "Container Structure Test - Command Tests"
+      org.opencontainers.image.description: "Running command execution and output tests"
       org.opencontainers.image.vendor: "ragedunicorn"
-  # Run all tests sequentially
+  # Run all tests sequentially with detailed output
+  # This service runs all three test suites in order and provides a summary
   test-all:
     image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     volumes:

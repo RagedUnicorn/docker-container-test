@@ -39,7 +39,7 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
   ragedunicorn/container-test:latest --image nginx:latest --config /test/nginx_test.yml
 
 # Run all tests using Docker Compose
-docker-compose -f docker-compose.test.yml run test-all
+docker compose -f docker-compose.test.yml run test-all
 ```
 
 For comprehensive testing documentation including examples, troubleshooting, and CI/CD integration, see [TEST.md](TEST.md).

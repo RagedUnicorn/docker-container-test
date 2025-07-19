@@ -40,10 +40,10 @@ The `docker-compose.dev.yml` file provides an interactive development environmen
 
 ```bash
 # Build the image locally
-docker-compose -f docker-compose.dev.yml build
+docker compose -f docker-compose.dev.yml build
 
 # Run in development mode (interactive shell)
-docker-compose -f docker-compose.dev.yml run --rm container-test-dev
+docker compose -f docker-compose.dev.yml run --rm container-test-dev
 
 # Inside the container, you can run container-structure-test manually
 container-structure-test --help
@@ -82,12 +82,17 @@ docker buildx build \
 After making changes, always run the test suite:
 
 ```bash
+# Build the image locally first
+docker build -t ragedunicorn/container-test:test .
+
 # Test the Container Structure Test image itself
-docker-compose -f docker-compose.test.yml run test-all
+CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 
 # Test a specific functionality
-docker-compose -f docker-compose.test.yml up container-test-command
+CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
 ```
+
+**Important**: Always test with locally built images. Docker Hub and GitHub Container Registry may override certain labels during automated builds, which can cause metadata tests to fail with registry-pulled images.
 
 See [TEST.md](TEST.md) for detailed testing information.
 

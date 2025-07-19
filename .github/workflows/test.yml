@@ -29,19 +29,39 @@ jobs:
             BUILD_DATE=${{ github.event.repository.updated_at }}
             VERSION=test
 
-      - name: Run Container Structure Tests on Alpine
+      - name: Run File Structure Tests
+        id: file-tests
+        continue-on-error: true
         run: |
-          echo "Running Container Structure Tests on Alpine Linux..."
-          docker compose -f docker-compose.test.yml run --rm test-all
+          echo "::group::📁 File Structure Tests"
+          CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up --exit-code-from container-test container-test
+          echo "::endgroup::"
+
+      - name: Run Command Execution Tests
+        id: command-tests
+        continue-on-error: true
+        run: |
+          echo "::group::🔧 Command Execution Tests"
+          CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up --exit-code-from container-test-command container-test-command
+          echo "::endgroup::"
+
+      - name: Run Metadata Tests
+        id: metadata-tests
+        continue-on-error: true
+        run: |
+          echo "::group::🏷️ Metadata Tests"
+          CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up --exit-code-from container-test-metadata container-test-metadata
+          echo "::endgroup::"
 
       - name: Test basic Container Structure Test functionality
+        id: basic-tests
+        continue-on-error: true
         run: |
-          echo "Testing basic Container Structure Test functionality..."
+          echo "::group::🧪 Basic Container Structure Test Functionality"
+          echo "Testing Container Structure Test version..."
           docker run --rm ragedunicorn/container-test:test version
-          
-      - name: Test with a real-world image
-        run: |
-          echo "Testing against nginx:alpine image..."
+          echo ""
+          echo "Testing with a real-world image (nginx:alpine)..."
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
             ragedunicorn/container-test:test \
@@ -53,7 +73,55 @@ jobs:
               args: ["-v"]
               exitCode: 0
           EOF
+          echo "::endgroup::"
 
+      - name: Generate Test Summary
+        if: always()
+        run: |
+          echo "## 📊 Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Suite | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.file-tests.outcome }}" == "success" ]; then
+            echo "| 📁 File Structure | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 📁 File Structure | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.command-tests.outcome }}" == "success" ]; then
+            echo "| 🔧 Command Execution | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 🔧 Command Execution | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.metadata-tests.outcome }}" == "success" ]; then
+            echo "| 🏷️ Metadata | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 🏷️ Metadata | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ steps.basic-tests.outcome }}" == "success" ]; then
+            echo "| 🧪 Basic Functionality | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 🧪 Basic Functionality | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Overall status
+          if [ "${{ steps.file-tests.outcome }}" == "success" ] && \
+             [ "${{ steps.command-tests.outcome }}" == "success" ] && \
+             [ "${{ steps.metadata-tests.outcome }}" == "success" ] && \
+             [ "${{ steps.basic-tests.outcome }}" == "success" ]; then
+            echo "### ✅ All tests passed successfully!" >> $GITHUB_STEP_SUMMARY
+            echo "::notice title=✅ All Tests Passed::Container Structure Test image is working correctly!"
+          else
+            echo "### ❌ Some tests failed. Check the logs for details." >> $GITHUB_STEP_SUMMARY
+            echo "::error title=❌ Test Failures::One or more test suites failed. Check the workflow logs for details."
+            exit 1
+          fi
+          
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v4

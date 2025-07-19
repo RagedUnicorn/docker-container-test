@@ -1,0 +1,10 @@
+schemaVersion: 2.0.0
+
+fileExistenceTests:
+  - name: 'Container Structure Test binary exists'
+    path: '/usr/bin/container-structure-test'
+    shouldExist: true
+    permissions: '-rwxr-xr-x'
+  - name: 'CA certificates installed'
+    path: '/etc/ssl/certs/ca-certificates.crt'
+    shouldExist: true
