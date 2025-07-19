@@ -10,8 +10,8 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "^Dockerfile$"
+      "managerFilePatterns": [
+        "/^Dockerfile$/"
       ],
       "matchStrings": [
         "ARG CONTAINER_STRUCTURE_VERSION=(?<currentValue>.*?)\\n"
@@ -30,12 +30,18 @@
   "automerge": false,
   "packageRules": [
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["alpine"],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "alpine"
+      ],
       "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     },
     {
-      "matchDatasources": ["docker"],
+      "matchDatasources": [
+        "docker"
+      ],
       "pinDigests": false
     }
   ]
