@@ -178,20 +178,20 @@ container-structure-test test --image alpine:latest --config /test/example_test.
 
 ## Versioning
 
-This project uses semantic versioning that includes both Container Structure Test and Alpine versions:
+This project uses semantic versioning that matches the Docker image contents:
 
 **Format:** `{container-structure-test_version}-alpine{alpine_version}-{build_number}`
 
-**Examples:**
-- `1.19.3-alpine3.22.1-1` - Initial release
-- `1.19.3-alpine3.22.1-2` - Rebuild with fixes
-- `1.19.3-alpine3.22.2-1` - Alpine update
-- `1.20.0-alpine3.22.1-1` - Container Structure Test update
+Examples:
+- `1.19.3-alpine3.22.1-1` - Container Structure Test 1.19.3 on Alpine 3.22.1, build 1
+- `latest` - Most recent stable release
+
+For detailed release process and versioning guidelines, see [RELEASE.md](RELEASE.md).
 
 ## Links
 
 - [Container Structure Test Documentation](https://github.com/GoogleContainerTools/container-structure-test)
-- [Test Configuration Reference](https://github.com/GoogleContainerTools/container-structure-test#test-configuration)
+- [Alpine Linux](https://www.alpinelinux.org/)
 
 ## License
 
