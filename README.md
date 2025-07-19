@@ -1,10 +1,14 @@
 # docker-container-test
 
-> A docker base image for executing container tests
+![](./docs/docker_container_test.png)
 
-## Version
+[![Release Build](https://github.com/RagedUnicorn/docker-container-test/actions/workflows/docker_release.yml/badge.svg)](https://github.com/RagedUnicorn/docker-ffmpeg/actions/workflows/docker_release.yml)
+![License: MIT](docs/license_badge.svg)
 
-* Google Container Structure Test v1.19.3
+
+> Docker Alpine base image for executing container tests
+
+![](./docs/alpine_linux_logo.svg)
 
 ## Using the image
 
