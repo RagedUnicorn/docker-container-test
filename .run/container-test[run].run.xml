@@ -3,6 +3,11 @@
     <deployment type="docker-compose.yml">
       <settings>
         <option name="envFilePath" value="" />
+        <option name="services">
+          <list>
+            <option value="test-all" />
+          </list>
+        </option>
         <option name="sourceFilePath" value="docker-compose.test.yml" />
       </settings>
     </deployment>
