@@ -4,7 +4,7 @@
 .gitattributes
 
 # documentation
-MIT.LICENSE
+LICENSE
 README.md
 RELEASE.md
 
