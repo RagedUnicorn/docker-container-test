@@ -91,11 +91,6 @@ This image uses semantic versioning that includes all component versions:
 
 **Format:** `{container-structure-test_version}-alpine{alpine_version}-{build_number}`
 
-### Available Tags
-
-- `latest` - Most recent stable build
-- `1.19.3-alpine3.22.1-1` - Specific version with Container Structure Test 1.19.3, Alpine 3.22.1, build 1
-
 ### Version Examples
 
 - `1.19.3-alpine3.22.1-1` - Initial release with Container Structure Test 1.19.3 and Alpine 3.22.1
