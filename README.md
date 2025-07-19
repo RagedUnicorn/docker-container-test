@@ -160,16 +160,21 @@ On some systems, you may need to run with appropriate permissions to access the 
 sudo docker run -v /var/run/docker.sock:/var/run/docker.sock ...
 ```
 
-## Development
+## Development Mode
 
-For debugging and development, use the development compose configuration:
+For testing and debugging, use the development compose file:
 
 ```bash
-docker-compose -f docker-compose.dev.yml up -d
-docker exec -it [container-id] /bin/sh
-```
+# Build the image locally
+docker-compose -f docker-compose.dev.yml build
 
-This provides an interactive shell for manual testing and debugging.
+# Run in development mode (interactive shell)
+docker-compose -f docker-compose.dev.yml run --rm container-test-dev
+
+# Inside the container, you can run container-structure-test manually
+container-structure-test --help
+container-structure-test test --image alpine:latest --config /test/example_test.yml
+```
 
 ## Versioning
 

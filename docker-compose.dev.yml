@@ -1,11 +1,31 @@
+# Docker Compose configuration for development
+#
+# This file is used for building and testing the Container Test image locally
+#
+# Usage:
+#   docker-compose -f docker-compose.dev.yml build
+#   docker-compose -f docker-compose.dev.yml run --rm container-test-dev
+#
+# This will drop you into a shell where you can manually run container-structure-test commands
+
 services:
-  container-test:
+  container-test-dev:
     build: .
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:latest}-dev
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}-dev
     stdin_open: true
     tty: true
+    # Override entrypoint to get a shell
     entrypoint: /bin/sh
     labels:
       org.opencontainers.image.title: "Container Structure Test (Dev)"
       org.opencontainers.image.description: "Google Container Structure Test development environment"
       org.opencontainers.image.vendor: "ragedunicorn"
+    environment:
+      - TERM=xterm-256color
+      - PS1=\[\033[1;36m\]container-test-dev\[\033[0m\]:\w\$
+    # Resource limits for development (optional)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '4'
+    #       memory: 4G
