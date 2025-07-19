@@ -43,10 +43,6 @@ jobs:
             type=match,pattern=v(.*),group=1
             # 'latest' tag for version tags
             type=raw,value=latest,enable=${{ startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, '-rc') && !contains(github.ref, '-beta') && !contains(github.ref, '-alpha') }}
-          labels: |
-            org.opencontainers.image.title=Container Structure Test Alpine
-            org.opencontainers.image.description=Google Container Structure Test on Alpine Linux
-            org.opencontainers.image.vendor=${{ github.repository_owner }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
