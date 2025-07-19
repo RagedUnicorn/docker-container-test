@@ -59,13 +59,13 @@ jobs:
         run: |
           echo "::group::🧪 Basic Container Structure Test Functionality"
           echo "Testing Container Structure Test version..."
-          docker run --rm ragedunicorn/container-test:test version
+          docker run --rm --entrypoint container-structure-test ragedunicorn/container-test:test version
           echo ""
           echo "Testing with a real-world image (nginx:alpine)..."
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
             ragedunicorn/container-test:test \
-            test --pull --image nginx:alpine --config - << 'EOF'
+            --pull --image nginx:alpine --config - << 'EOF'
           schemaVersion: 2.0.0
           commandTests:
             - name: "nginx version"
