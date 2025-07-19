@@ -6,7 +6,7 @@ This document describes how to create a new release for the Docker Container Tes
 
 ```bash
 # Tag format: v{container-structure-test_version}-alpine{alpine_version}-{build_number}
-git tag v1.19.3-alpine3.22.1-1
+git tag -a v1.19.3-alpine3.22.1-1 -m "v1.19.3-alpine3.22.1-1"
 git push origin v1.19.3-alpine3.22.1-1
 ```
 
