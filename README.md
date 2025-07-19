@@ -2,96 +2,197 @@
 
 ![](./docs/docker_container_test.png)
 
-[![Release Build](https://github.com/RagedUnicorn/docker-container-test/actions/workflows/docker_release.yml/badge.svg)](https://github.com/RagedUnicorn/docker-ffmpeg/actions/workflows/docker_release.yml)
+[![Release Build](https://github.com/RagedUnicorn/docker-container-test/actions/workflows/docker_release.yml/badge.svg)](https://github.com/RagedUnicorn/docker-container-test/actions/workflows/docker_release.yml)
 ![License: MIT](docs/license_badge.svg)
 
-
-> Docker Alpine base image for executing container tests
+> Docker Alpine image with Google Container Structure Test for validating container images.
 
 ![](./docs/alpine_linux_logo.svg)
 
-## Using the image
+## Overview
 
-This image can be used as a base to run container structure tests on other images. As a convention all projects should create a `test` folder at the topmost project level containing all tests for the image.
+This Docker image provides a lightweight Container Structure Test installation on Alpine Linux. It enables automated validation of Docker images by testing their structure, contents, and behavior without needing to run them.
 
-| Testname | Description                                                                                                                |
-| -------- | -------------------------------------------------------------------------------------------------------------------------- |
-| [application]_metadata_test.yml  | A set of tests to check for certain expected entries in the Dockerfile such as ports, volumes etc. |
-| [application]_command_test.yml   | Basic tests for executing a command related to the image                                           |
-| [application]_test.yml           | Basic tests for the image such as file existence checks                                            |
+## Features
 
-Projects can then either run the tests by hand or create a specific docker compose setup to execute all tests. As a convention this configuration should be named `docker-compose.test.yml`. An example that can be used as a template can be found in this repository (`docker-compose.test.template`). Only the image to be tested and the tests itself need to be changed if the recommended conventions of this readme are followed.
+- **Small footprint**: Minimal Alpine Linux base image
+- **Container Structure Test v1.19.3**: Latest stable version
+- **Docker-in-Docker support**: Can test images using the Docker socket
+- **Multi-platform**: Supports linux/amd64 and linux/arm64
+- **Ready-to-use**: Pre-configured for immediate testing
 
-After that the tests can be run by starting the services
+## Building the Image
 
-`docker-compose -f docker-compose.test.yml up`
-
-**Note:** using -d option for docker-compose is not recommended in this case. Otherwise, the logs with the results of the tests need to be grabbed manually in each container. Without the -d option the result will already be displayed.
-
-
-Tests can also be run separate by starting single services in `docker-compose.test.yml`
-
+```bash
+docker build -t ragedunicorn/container-test .
 ```
-# basic file existence tests
+
+## Usage
+
+The container uses Container Structure Test as the entrypoint, so test parameters can be passed directly to the `docker run` command.
+
+### Basic Usage
+
+```bash
+# Using latest version
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
+  ragedunicorn/container-test:latest --image [image-to-test] --config /test/[test-file].yml
+
+# Using specific version
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
+  ragedunicorn/container-test:1.19.3-alpine3.22.1-1 --image [image-to-test] --config /test/[test-file].yml
+```
+
+### Test File Structure
+
+Container Structure Test supports three types of tests:
+
+| Test Type                         | Description                                                       |
+|-----------------------------------|-------------------------------------------------------------------|
+| `[application]_test.yml`          | Basic tests for file existence and content validation             |
+| `[application]_command_test.yml`  | Tests for command execution and output validation                 |
+| `[application]_metadata_test.yml` | Tests for Dockerfile metadata like labels, exposed ports, volumes |
+
+### Examples
+
+#### Test File Existence
+
+```yaml
+# test/app_test.yml
+schemaVersion: 2.0.0
+
+fileExistenceTests:
+  - name: 'App binary exists'
+    path: '/usr/local/bin/app'
+    shouldExist: true
+  - name: 'Config directory exists'
+    path: '/etc/app'
+    shouldExist: true
+```
+
+#### Test Command Output
+
+```yaml
+# test/app_command_test.yml
+schemaVersion: 2.0.0
+
+commandTests:
+  - name: 'App version'
+    command: 'app'
+    args: ['--version']
+    expectedOutput: ['v1.0.0']
+    exitCode: 0
+```
+
+#### Test Metadata
+
+```yaml
+# test/app_metadata_test.yml
+schemaVersion: 2.0.0
+
+metadataTest:
+  labels:
+    - key: 'maintainer'
+      value: 'example@email.com'
+  exposedPorts: ['8080']
+  volumes: ['/data']
+```
+
+## Docker Compose Usage
+
+### Using the Template
+
+1. Copy `docker-compose.test.template` to `docker-compose.test.yml`
+2. Replace `[image_to_test]` with your image name
+3. Update test file paths as needed
+
+### Running Tests
+
+```bash
+# Run all tests
+docker-compose -f docker-compose.test.yml up
+
+# Run specific test suites
 docker-compose -f docker-compose.test.yml up container-test
-# command tests
 docker-compose -f docker-compose.test.yml up container-test-command
-# metadata tests
 docker-compose -f docker-compose.test.yml up container-test-metadata
 ```
 
-Instead of using a docker-compose file the tests can be run with docker directly.
+### Platform-Specific Notes
 
-**Note:** Take attention to the difference of mounting the docker socket on different platforms.
+#### Windows
 
-##### Windows:
 ```shell
-docker run -v //var/run/docker.sock:/var/run/docker.sock -v ${PWD}/test:/test -t ragedun
-icorn/container-test:1.0.0-stable --image [some-image] --config [some-test-file]
+docker run -v //var/run/docker.sock:/var/run/docker.sock -v ${PWD}/test:/test \
+  ragedunicorn/container-test:1.19.3-alpine3.22.1-1 --image [image] --config /test/[test].yml
 ```
 
-##### Unix:
+#### Unix/Linux/macOS
+
 ```shell
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/test:/test -t ragedun
-icorn/container-test:1.0.0-stable --image [some-image] --config [some-test-file]
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/test:/test \
+  ragedunicorn/container-test:1.19.3-alpine3.22.1-1 --image [image] --config /test/[test].yml
 ```
 
-## Known Issues
+## Common Issues
 
-#### No such image
+### Image Not Found
 
-Also make sure to pull or create the image to be tested locally before running the tests otherwise the following error might occur.
-
-```
-ERROR: Error creating container: no such image
-...
+Ensure the image to test is available locally:
+```bash
+docker pull [image-to-test]
 ```
 
-Using the template the image to test will be automatically pulled from the repository if not available locally. This might be unwanted behavior. Change the template accordingly by removing `--pull` from the command section of docker-compose.
+Or use the `--pull` flag to automatically pull the image:
+```bash
+docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
+  ragedunicorn/container-test:latest --pull --image [image] --config /test/[test].yml
+```
 
-#### Tests Blocked
+### Tests Blocked by Running Processes
 
-Google Container Structure Test is overriding the entrypoint by default to prevent containers that run blocking processes from blocking the tests. If for an example a docker image starts a webserver the tests cannot be run because that process is blocking the tests. Usually this works out with GCST overriding the entrypoint. However, if it does not keep this in mind and make sure no process is blocking the running of the tests.
+Container Structure Test overrides the entrypoint to prevent blocking processes. If tests fail due to running services, ensure your test configuration accounts for this behavior.
+
+### Docker Socket Permission
+
+On some systems, you may need to run with appropriate permissions to access the Docker socket:
+```bash
+sudo docker run -v /var/run/docker.sock:/var/run/docker.sock ...
+```
 
 ## Development
 
-To debug the container and get more insight into the container use the `docker-compose.dev.yml`
-configuration.
+For debugging and development, use the development compose configuration:
 
-```
+```bash
 docker-compose -f docker-compose.dev.yml up -d
+docker exec -it [container-id] /bin/sh
 ```
 
-By default, the container will be setup to keep `stdin` open and allocating a pseudo `tty`. This allows for connecting to a shell and work on the container. A shell can be opened inside the container with `docker attach [container-id]`. From there tests can be run manually for further insight of what is happening in the container.
+This provides an interactive shell for manual testing and debugging.
+
+## Versioning
+
+This project uses semantic versioning that includes both Container Structure Test and Alpine versions:
+
+**Format:** `{container-structure-test_version}-alpine{alpine_version}-{build_number}`
+
+**Examples:**
+- `1.19.3-alpine3.22.1-1` - Initial release
+- `1.19.3-alpine3.22.1-2` - Rebuild with fixes
+- `1.19.3-alpine3.22.2-1` - Alpine update
+- `1.20.0-alpine3.22.1-1` - Container Structure Test update
 
 ## Links
 
-Google Container Structure Tests repository
-- https://github.com/GoogleContainerTools/container-structure-test
+- [Container Structure Test Documentation](https://github.com/GoogleContainerTools/container-structure-test)
+- [Test Configuration Reference](https://github.com/GoogleContainerTools/container-structure-test#test-configuration)
 
 ## License
 
-Copyright (C) 2025 Michael Wiesendanger
+MIT License
+
+Copyright (c) 2025 Michael Wiesendanger
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
