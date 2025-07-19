@@ -1,21 +1,54 @@
-FROM docker:20.10.21
+############################################
+# Container Structure Test build stage
+############################################
+FROM alpine:3.22.1 AS build
 
-LABEL com.ragedunicorn.maintainer="Michael Wiesendanger <michael.wiesendanger@gmail.com>"
+ARG CONTAINER_STRUCTURE_VERSION=v1.19.3
 
-#    ______            __        _                    ______          __
-#   / ____/___  ____  / /_____ _(_)___  ___  _____   /_  __/__  _____/ /_
-#  / /   / __ \/ __ \/ __/ __ `/ / __ \/ _ \/ ___/    / / / _ \/ ___/ __/
-# / /___/ /_/ / / / / /_/ /_/ / / / / /  __/ /       / / /  __(__  ) /_
-# \____/\____/_/ /_/\__/\__,_/_/_/ /_/\___/_/       /_/  \___/____/\__/
+LABEL org.opencontainers.image.authors="Michael Wiesendanger <michael.wiesendanger@gmail.com>" \
+      org.opencontainers.image.source="https://github.com/RagedUnicorn/docker-container-test" \
+      org.opencontainers.image.licenses="MIT"
 
-ENV \
-  CONTAINER_STRUCTURE_VERSION=v1.14.0
+# Install build dependencies
+RUN apk add --no-cache --update \
+    ca-certificates \
+    wget
 
-RUN \
-  if ! wget -O /usr/bin/container-structure-test https://storage.googleapis.com/container-structure-test/"${CONTAINER_STRUCTURE_VERSION}"/container-structure-test-linux-amd64; then \
-    echo >&2 "Error: Failed to download Container structure test binary"; \
-    exit 1; \
-  fi && \
-  chmod +x /usr/bin/container-structure-test
+# Download Container Structure Test binary
+RUN cd /tmp && \
+    wget -O container-structure-test https://github.com/GoogleContainerTools/container-structure-test/releases/download/${CONTAINER_STRUCTURE_VERSION}/container-structure-test-linux-amd64 && \
+    chmod +x container-structure-test
 
+############################################
+# Runtime stage
+############################################
+FROM alpine:3.22.1
+
+ARG CONTAINER_STRUCTURE_VERSION=v1.19.3
+ARG BUILD_DATE
+ARG VERSION
+
+LABEL org.opencontainers.image.title="Container Structure Test on Alpine Linux" \
+      org.opencontainers.image.description="Google Container Structure Test for validating Docker images, built on Alpine Linux" \
+      org.opencontainers.image.vendor="ragedunicorn" \
+      org.opencontainers.image.authors="Michael Wiesendanger <michael.wiesendanger@gmail.com>" \
+      org.opencontainers.image.source="https://github.com/RagedUnicorn/docker-container-test" \
+      org.opencontainers.image.documentation="https://github.com/RagedUnicorn/docker-container-test/blob/master/README.md" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.base.name="docker.io/library/alpine:3.22.1"
+
+# Install runtime dependencies only
+RUN apk add --no-cache --update \
+    ca-certificates \
+    docker-cli
+
+# Copy Container Structure Test binary from build stage
+COPY --from=build /tmp/container-structure-test /usr/bin/container-structure-test
+
+# Set the entrypoint to container-structure-test binary
 ENTRYPOINT ["container-structure-test", "test"]
+
+# Default to showing help if no arguments provided
+CMD ["--help"]

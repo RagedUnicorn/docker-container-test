@@ -1,8 +1,8 @@
-version: '3.9'
 services:
   container-test:
     build: .
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION}-stable
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     labels:
-      com.ragedunicorn.container-test.environment: "dev"
-      com.ragedunicorn.container-test.description: "Google Container Structure Test"
+      org.opencontainers.image.title: "Container Structure Test"
+      org.opencontainers.image.description: "Google Container Structure Test on Alpine Linux"
+      org.opencontainers.image.vendor: "ragedunicorn"

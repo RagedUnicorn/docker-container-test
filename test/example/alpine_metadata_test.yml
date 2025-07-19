@@ -1,0 +1,10 @@
+schemaVersion: 2.0.0
+
+metadataTest:
+  labels:
+    - key: 'com.ragedunicorn.maintainer'
+      value: 'Michael Wiesendanger <michael.wiesendanger@gmail.com>'
+  entrypoint: []
+  cmd: ['/bin/sh']
+  workdir: '/'
+  user: 'root'

@@ -1,11 +1,11 @@
-version: '3.9'
 services:
   container-test:
     build: .
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION}-dev
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:latest}-dev
     stdin_open: true
     tty: true
     entrypoint: /bin/sh
     labels:
-      com.ragedunicorn.container-test.environment: "dev"
-      com.ragedunicorn.container-test.description: "Google Container Structure Test"
+      org.opencontainers.image.title: "Container Structure Test (Dev)"
+      org.opencontainers.image.description: "Google Container Structure Test development environment"
+      org.opencontainers.image.vendor: "ragedunicorn"
