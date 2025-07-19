@@ -4,7 +4,7 @@
 
 ## Version
 
-* Google Container Structure Test v1.14.0
+* Google Container Structure Test v1.19.3
 
 ## Using the image
 
@@ -54,27 +54,6 @@ icorn/container-test:1.0.0-stable --image [some-image] --config [some-test-file]
 
 ## Known Issues
 
-#### Mount Error
-On Windows running in this error is common:
-
-```
-\var\\\\run\\\\docker.sock:/var/run/docker.sock"\nis not a valid Windows path'
-
-ERROR: for container-test  Cannot create container for service container-test: b'Mount denied:\nThe source path "\\\\var\\\\run\\\\docker.sock:/var/run/docker.sock"\nis not a valid Windows path'
-Encountered errors while bringing up the project.
-```
-
-It can be solved by enabling converting of windows paths in docker compose by setting the following environment variable.
-
-```
-export COMPOSE_CONVERT_WINDOWS_PATHS=1
-
-# Powershell
-$Env:COMPOSE_CONVERT_WINDOWS_PATHS=1
-```
-
-Also note that host volumes need to be enabled in docker and can be tricky sometimes. See [docker bind volumes](https://docs.docker.com/storage/bind-mounts/) for more info.
-
 #### No such image
 
 Also make sure to pull or create the image to be tested locally before running the tests otherwise the following error might occur.
@@ -89,42 +68,6 @@ Using the template the image to test will be automatically pulled from the repos
 #### Tests Blocked
 
 Google Container Structure Test is overriding the entrypoint by default to prevent containers that run blocking processes from blocking the tests. If for an example a docker image starts a webserver the tests cannot be run because that process is blocking the tests. Usually this works out with GCST overriding the entrypoint. However, if it does not keep this in mind and make sure no process is blocking the running of the tests.
-
-## Dockery
-
-In the dockery folder are some scripts that help out avoiding retyping long docker commands but are mostly intended for playing around with the container. For production use docker-compose or docker stack should be used.
-
-#### Build image
-
-The build script builds an image with a defined name
-
-```
-sh dockery/dbuild.sh
-```
-
-#### Run container
-
-Runs the built container. If the container was already run once it will `docker start` the already present container instead of using `docker run`
-
-```
-sh dockery/drun.sh
-```
-
-#### Attach container
-
-Attaching to the container after it is running
-
-```
-sh dockery/dattach.sh
-```
-
-#### Stop container
-
-Stopping the running container
-
-```
-sh dockery/dstop.sh
-```
 
 ## Development
 
