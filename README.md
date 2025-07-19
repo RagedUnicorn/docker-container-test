@@ -87,7 +87,7 @@ Google Container Structure Tests repository
 
 ## License
 
-Copyright (C) 2022 Michael Wiesendanger
+Copyright (C) 2025 Michael Wiesendanger
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
