@@ -1,0 +1,28 @@
+services:
+  container-test:
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION}-stable
+    volumes:
+        - ./test/example/:/test
+        - /var/run/docker.sock:/var/run/docker.sock
+    command: ["--pull", "--image", "alpine:3.22.1", "--config", "/test/alpine_test.yml"]
+    labels:
+      com.ragedunicorn.container-test.environment: "test"
+      com.ragedunicorn.container-test.description: "Google Container Structure Test - Basic Tests"
+  container-test-metadata:
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION}-stable
+    volumes:
+        - ./test/example/:/test
+        - /var/run/docker.sock:/var/run/docker.sock
+    command: ["--pull", "--image", "alpine:3.22.1", "--config", "/test/alpine_metadata_test.yml"]
+    labels:
+      com.ragedunicorn.container-test.environment: "test"
+      com.ragedunicorn.container-test.description: "Google Container Structure Test - Metadata Tests"
+  container-test-command:
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION}-stable
+    volumes:
+        - ./test/example/:/test
+        - /var/run/docker.sock:/var/run/docker.sock
+    command: ["--pull", "--image", "alpine:3.22.1", "--config", "/test/alpine_command_test.yml"]
+    labels:
+      com.ragedunicorn.container-test.environment: "test"
+      com.ragedunicorn.container-test.description: "Google Container Structure Test - Command Tests"

@@ -1,0 +1,32 @@
+schemaVersion: 2.0.0
+
+fileExistenceTests:
+  - name: 'Root filesystem check'
+    path: '/'
+    shouldExist: true
+  - name: 'Bin directory exists'
+    path: '/bin'
+    shouldExist: true
+  - name: 'Package manager exists'
+    path: '/sbin/apk'
+    shouldExist: true
+  - name: 'Shell exists'
+    path: '/bin/sh'
+    shouldExist: true
+
+fileContentTests:
+  - name: 'OS release contains Alpine'
+    path: '/etc/os-release'
+    expectedContents:
+      - 'Alpine Linux'
+
+commandTests:
+  - name: 'Package manager works'
+    command: 'apk'
+    args: ['--version']
+    exitCode: 0
+  - name: 'Shell is functional'
+    command: 'sh'
+    args: ['-c', 'echo "Hello from Alpine"']
+    expectedOutput:
+      - 'Hello from Alpine'

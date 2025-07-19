@@ -1,0 +1,26 @@
+schemaVersion: 2.0.0
+
+commandTests:
+  - name: 'List root directory'
+    command: 'ls'
+    args: ['-la', '/']
+    exitCode: 0
+  - name: 'Check Alpine version'
+    command: 'cat'
+    args: ['/etc/alpine-release']
+    exitCode: 0
+    expectedOutput:
+      - '3.22.1'
+  - name: 'Environment variables'
+    command: 'env'
+    exitCode: 0
+  - name: 'Create and remove file'
+    command: 'sh'
+    args: ['-c', 'touch /tmp/test.txt && rm /tmp/test.txt && echo "Success"']
+    exitCode: 0
+    expectedOutput:
+      - 'Success'
+  - name: 'Check available commands'
+    command: 'which'
+    args: ['wget']
+    exitCode: 0
