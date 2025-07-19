@@ -1,0 +1,64 @@
+name: Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Container Structure Test image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: ragedunicorn/container-test:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILD_DATE=${{ github.event.repository.updated_at }}
+            VERSION=test
+
+      - name: Run Container Structure Tests on Alpine
+        run: |
+          echo "Running Container Structure Tests on Alpine Linux..."
+          docker-compose -f docker-compose.test.yml run --rm test-all
+
+      - name: Test basic Container Structure Test functionality
+        run: |
+          echo "Testing basic Container Structure Test functionality..."
+          docker run --rm ragedunicorn/container-test:test version
+          
+      - name: Test with a real-world image
+        run: |
+          echo "Testing against nginx:alpine image..."
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            ragedunicorn/container-test:test \
+            test --pull --image nginx:alpine --config - << 'EOF'
+          schemaVersion: 2.0.0
+          commandTests:
+            - name: "nginx version"
+              command: "nginx"
+              args: ["-v"]
+              exitCode: 0
+          EOF
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            test-*.log
+          retention-days: 7
