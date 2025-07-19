@@ -1,28 +1,31 @@
 services:
   container-test:
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION}-stable
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     volumes:
         - ./test/example/:/test
         - /var/run/docker.sock:/var/run/docker.sock
     command: ["--pull", "--image", "alpine:3.22.1", "--config", "/test/alpine_test.yml"]
     labels:
-      com.ragedunicorn.container-test.environment: "test"
-      com.ragedunicorn.container-test.description: "Google Container Structure Test - Basic Tests"
+      org.opencontainers.image.title: "Container Structure Test - Basic Tests"
+      org.opencontainers.image.description: "Running basic file existence and content tests"
+      org.opencontainers.image.vendor: "ragedunicorn"
   container-test-metadata:
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION}-stable
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     volumes:
         - ./test/example/:/test
         - /var/run/docker.sock:/var/run/docker.sock
     command: ["--pull", "--image", "alpine:3.22.1", "--config", "/test/alpine_metadata_test.yml"]
     labels:
-      com.ragedunicorn.container-test.environment: "test"
-      com.ragedunicorn.container-test.description: "Google Container Structure Test - Metadata Tests"
+      org.opencontainers.image.title: "Container Structure Test - Metadata Tests"
+      org.opencontainers.image.description: "Running Docker metadata validation tests"
+      org.opencontainers.image.vendor: "ragedunicorn"
   container-test-command:
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION}-stable
+    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     volumes:
         - ./test/example/:/test
         - /var/run/docker.sock:/var/run/docker.sock
     command: ["--pull", "--image", "alpine:3.22.1", "--config", "/test/alpine_command_test.yml"]
     labels:
-      com.ragedunicorn.container-test.environment: "test"
-      com.ragedunicorn.container-test.description: "Google Container Structure Test - Command Tests"
+      org.opencontainers.image.title: "Container Structure Test - Command Tests"
+      org.opencontainers.image.description: "Running command execution and output tests"
+      org.opencontainers.image.vendor: "ragedunicorn"

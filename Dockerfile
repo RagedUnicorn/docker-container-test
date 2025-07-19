@@ -5,7 +5,9 @@ FROM alpine:3.22.1 AS build
 
 ARG CONTAINER_STRUCTURE_VERSION=v1.19.3
 
-LABEL com.ragedunicorn.maintainer="Michael Wiesendanger <michael.wiesendanger@gmail.com>"
+LABEL org.opencontainers.image.authors="Michael Wiesendanger <michael.wiesendanger@gmail.com>" \
+      org.opencontainers.image.source="https://github.com/RagedUnicorn/docker-container-test" \
+      org.opencontainers.image.licenses="MIT"
 
 # Install build dependencies
 RUN apk add --no-cache --update \
@@ -22,7 +24,20 @@ RUN cd /tmp && \
 ############################################
 FROM alpine:3.22.1
 
-LABEL com.ragedunicorn.maintainer="Michael Wiesendanger <michael.wiesendanger@gmail.com>"
+ARG CONTAINER_STRUCTURE_VERSION=v1.19.3
+ARG BUILD_DATE
+ARG VERSION
+
+LABEL org.opencontainers.image.title="Container Structure Test on Alpine Linux" \
+      org.opencontainers.image.description="Google Container Structure Test for validating Docker images, built on Alpine Linux" \
+      org.opencontainers.image.vendor="ragedunicorn" \
+      org.opencontainers.image.authors="Michael Wiesendanger <michael.wiesendanger@gmail.com>" \
+      org.opencontainers.image.source="https://github.com/RagedUnicorn/docker-container-test" \
+      org.opencontainers.image.documentation="https://github.com/RagedUnicorn/docker-container-test/blob/master/README.md" \
+      org.opencontainers.image.licenses="MIT" \
+      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.base.name="docker.io/library/alpine:3.22.1"
 
 # Install runtime dependencies only
 RUN apk add --no-cache --update \
