@@ -1,21 +1,156 @@
-# Release
+# Release Process
 
-> This document explains how a new release is created for this docker container
+This document describes how to create a new release for the Docker Container Test project.
 
-* Update docker-compose files
-  * Update .env image tag version
-* Create a new git tag and push it
-  * `git tag vx.x.x`
-  * `git push origin --tags`
-* Draft new GitHub release with description
-  * Title should be the version e.g. vx.x.x
-  * Short description of what was added newly
-* Update docker hub
-  * Build dev tag `docker-compose -f docker-compose.dev.yml build`
-  * Push image to dockerhub `docker push ragedunicorn/container-test:x.x.x-dev`
-  * Build stable tag `docker-compose build`
-  * Push image to dockerhub `docker push ragedunicorn/container-test:x.x.x-stable`
-  * Tag and push stable version as latest version (default image for docker hub)
-    * `docker tag ragedunicorn/container-test:x.x.x-stable ragedunicorn/container-test:latest`
-    * `docker push ragedunicorn/container-test:latest`
-* Update docker hub description links
+## Quick Start
+
+```bash
+# Tag format: v{container-structure-test_version}-alpine{alpine_version}-{build_number}
+git tag v1.19.3-alpine3.22.1-1
+git push origin v1.19.3-alpine3.22.1-1
+```
+
+This automatically triggers the release process via GitHub Actions.
+
+## Version Tag Format
+
+**Format:** `v{container-structure-test_version}-alpine{alpine_version}-{build_number}`
+
+Examples:
+- `v1.19.3-alpine3.22.1-1` - Initial release
+- `v1.19.3-alpine3.22.1-2` - Rebuild with same versions
+- `v1.19.3-alpine3.22.2-1` - Alpine update (build resets to 1)
+- `v1.20.0-alpine3.22.1-1` - Container Structure Test update (build resets to 1)
+
+## Release Workflow
+
+When you push a tag, GitHub Actions automatically:
+
+1. **Builds Docker images** (`.github/workflows/docker_release.yml`)
+   - Multi-platform: linux/amd64 and linux/arm64
+   - Pushes to both GitHub Container Registry and Docker Hub
+
+2. **Creates GitHub Release** (`.github/workflows/release.yml`)
+   - Generates changelog from commit history
+   - Adds Docker pull commands
+   - Links to the release
+
+## When to Create a Release
+
+Create a new release when:
+
+1. **Container Structure Test updates** - New upstream version available
+2. **Alpine base image updates** - Security patches or new Alpine version
+3. **Bug fixes** - After fixing issues in the Dockerfile or build process
+4. **Feature additions** - After adding new functionality
+5. **Security patches** - Immediately after security-related updates
+
+### Build Number Guidelines
+
+- **Reset to 1**: When Container Structure Test or Alpine version changes
+- **Increment**: When rebuilding with the same versions (fixes, optimizations)
+
+## Post-Release Tasks
+
+### Update Docker Hub Documentation
+
+After creating a release, manually update the Docker Hub repository description:
+
+1. Go to [Docker Hub](https://hub.docker.com/r/ragedunicorn/container-test)
+2. Click "Manage Repository" → "Description"
+3. Update any version numbers in the examples to match the latest release
+4. Save the changes
+
+## Best Practices
+
+### Commit Messages
+
+Use conventional commit format for better changelogs:
+
+- `feat:` New features
+- `fix:` Bug fixes
+- `docs:` Documentation changes
+- `chore:` Maintenance tasks
+- `refactor:` Code refactoring
+- `test:` Test additions/changes
+- `perf:` Performance improvements
+
+Example:
+```bash
+git commit -m "feat: update to Container Structure Test v1.19.3"
+git commit -m "fix: resolve permission issues with Docker socket"
+git commit -m "docs: update test examples for new version"
+```
+
+### Pre-release Testing
+
+Before creating a release:
+
+1. Test the Docker image locally with your version changes
+2. Run the example tests to verify functionality
+3. Check that multi-platform builds work (especially arm64)
+4. Verify the container can connect to Docker socket properly
+
+## Troubleshooting
+
+### Release didn't trigger
+
+- Ensure tag starts with `v` and follows the format (e.g., `v1.19.3-alpine3.22.1-1`)
+- Check GitHub Actions tab for workflow runs
+- Verify you have push permissions
+
+### Docker build failed
+
+- Check the Docker workflow logs
+- Ensure Dockerfile builds locally
+- Verify multi-platform compatibility
+- Check if Container Structure Test download URL is still valid
+
+### Missing permissions
+
+Ensure your repository has:
+- GitHub Actions enabled
+- Package write permissions for workflows
+- Proper secrets configuration (GITHUB_TOKEN is automatic)
+
+### Docker Hub Configuration
+
+To enable Docker Hub deployment, you need to add these secrets to your GitHub repository:
+
+1. Go to Settings → Secrets and variables → Actions
+2. Add the following secrets:
+   - `DOCKERHUB_USERNAME`: Your Docker Hub username
+   - `DOCKERHUB_TOKEN`: Your Docker Hub access token (not password)
+
+To create a Docker Hub access token:
+1. Log in to Docker Hub
+2. Go to Account Settings → Security
+3. Click "New Access Token"
+4. Give it a descriptive name (e.g., "GitHub Actions")
+5. Copy the token and add it as `DOCKERHUB_TOKEN` secret
+
+## Manual Release (if needed)
+
+If automation fails, you can create a release manually:
+
+1. Go to repository's "Releases" page
+2. Click "Create a new release"
+3. Choose your tag (must follow format: `v1.19.3-alpine3.22.1-1`)
+4. Add release notes
+5. Include Docker pull commands:
+   ```
+   docker pull ghcr.io/ragedunicorn/docker-container-test:1.19.3-alpine3.22.1-1
+   docker pull ragedunicorn/container-test:1.19.3-alpine3.22.1-1
+   ```
+
+## Checking for Updates
+
+To check for new Container Structure Test versions:
+```bash
+# Check latest release
+curl -s https://api.github.com/repos/GoogleContainerTools/container-structure-test/releases/latest | grep tag_name
+
+# Check Alpine base image
+docker pull alpine:latest
+docker image inspect alpine:latest | grep "Created"
+```
