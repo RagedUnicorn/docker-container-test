@@ -76,6 +76,7 @@ Use conventional commit format for better changelogs:
 - `perf:` Performance improvements
 
 Example:
+
 ```bash
 git commit -m "feat: update to Container Structure Test v1.19.3"
 git commit -m "fix: resolve permission issues with Docker socket"
@@ -146,6 +147,7 @@ If automation fails, you can create a release manually:
 ## Checking for Updates
 
 To check for new Container Structure Test versions:
+
 ```bash
 # Check latest release
 curl -s https://api.github.com/repos/GoogleContainerTools/container-structure-test/releases/latest | grep tag_name

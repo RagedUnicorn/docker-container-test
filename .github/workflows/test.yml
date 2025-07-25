@@ -84,33 +84,33 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Test Suite | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
-          
+
           if [ "${{ steps.file-tests.outcome }}" == "success" ]; then
             echo "| 📁 File Structure | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| 📁 File Structure | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ "${{ steps.command-tests.outcome }}" == "success" ]; then
             echo "| 🔧 Command Execution | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| 🔧 Command Execution | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ "${{ steps.metadata-tests.outcome }}" == "success" ]; then
             echo "| 🏷️ Metadata | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| 🏷️ Metadata | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           if [ "${{ steps.basic-tests.outcome }}" == "success" ]; then
             echo "| 🧪 Basic Functionality | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
           else
             echo "| 🧪 Basic Functionality | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
           fi
-          
+
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           # Overall status
           if [ "${{ steps.file-tests.outcome }}" == "success" ] && \
              [ "${{ steps.command-tests.outcome }}" == "success" ] && \
@@ -123,7 +123,7 @@ jobs:
             echo "::error title=❌ Test Failures::One or more test suites failed. Check the workflow logs for details."
             exit 1
           fi
-          
+
       - name: Upload test logs
         if: always() && (steps.file-tests.outcome == 'failure' || steps.command-tests.outcome == 'failure' || steps.metadata-tests.outcome == 'failure' || steps.basic-tests.outcome == 'failure')
         uses: actions/upload-artifact@v4

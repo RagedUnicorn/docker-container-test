@@ -129,12 +129,14 @@ docker build -t ragedunicorn/container-test:test .
 ```
 
 **Linux/macOS:**
+
 ```bash
 # Run tests against your local build
 CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 # Run tests against your local build
 $env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
@@ -149,6 +151,7 @@ $env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.t
 **Never pull remote images for testing:**
 
 **❌ DON'T DO THIS - may have different labels/settings:**
+
 ```bash
 docker pull ragedunicorn/container-test:latest
 docker compose -f docker-compose.test.yml run test-all
@@ -157,12 +160,14 @@ docker compose -f docker-compose.test.yml run test-all
 **✅ DO THIS - test your local build:**
 
 **Linux/macOS:**
+
 ```bash
 docker build -t ragedunicorn/container-test:test .
 CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 docker build -t ragedunicorn/container-test:test .
 $env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
@@ -173,18 +178,21 @@ $env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.t
 Run all tests against your local build:
 
 **Linux/macOS:**
+
 ```bash
 # Ensure you've built locally first!
 CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 # Ensure you've built locally first!
 $env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (Command Prompt):**
+
 ```cmd
 # Ensure you've built locally first!
 set CONTAINER_STRUCTURE_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
@@ -193,6 +201,7 @@ set CONTAINER_STRUCTURE_TEST_VERSION=test && docker compose -f docker-compose.te
 Run specific test categories:
 
 **Linux/macOS:**
+
 ```bash
 # File structure tests
 CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test
@@ -205,6 +214,7 @@ CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml 
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 # File structure tests
 $env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test
@@ -226,12 +236,14 @@ docker build -t ragedunicorn/container-test:1.19.3-alpine3.22.1-1 .
 ```
 
 **Linux/macOS:**
+
 ```bash
 # Test that specific version
 CONTAINER_STRUCTURE_TEST_VERSION=1.19.3-alpine3.22.1-1 docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
+
 ```powershell
 # Test that specific version
 $env:CONTAINER_STRUCTURE_TEST_VERSION="1.19.3-alpine3.22.1-1"; docker compose -f docker-compose.test.yml run test-all
@@ -360,6 +372,7 @@ These Alpine tests demonstrate how to test any Docker image and can be used as t
    - Build date labels are dynamic
 
 **Solution:** Always build and test locally before pushing:
+
 ```bash
 docker build -t ragedunicorn/container-test:test .
 CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
