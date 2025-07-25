@@ -1,5 +1,8 @@
-# Automatically normalize line endings for all text-based files
 * text=auto
 
-# set scripts to lf
+.dockerignore text eol=lf
+Dockerfile text eol=lf
+docker-compose.yml text eol=lf
+docker-compose.*.yml text eol=lf
+
 *.sh text eol=lf

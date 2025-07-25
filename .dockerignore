@@ -1,18 +1,37 @@
-# git
+# Git files
 .git
 .gitignore
 .gitattributes
 
-# documentation
-LICENSE
+# Documentation
 README.md
-RELEASE.md
+TEST.md
+LICENSE
+docs/
 
-# docker-compose
-docker-compose.yml
-docker-compose.dev.yml
-docker-compose.test.template
+# Build artifacts
+*.log
+*.tmp
+.DS_Store
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Test files
+test/
+tests/
+*.test
+*.spec
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Environment files with secrets
 .env
-
-# misc
-dockery/
+.env.local
+.env.*.local
