@@ -420,6 +420,51 @@ Use double slashes for the Docker socket path:
 docker run -v //var/run/docker.sock:/var/run/docker.sock ...
 ```
 
+### Symbolic Link Permission Format Issue
+
+**Problem:** Container Structure Test fails when testing symbolic links with standard Unix permission format.
+
+**Error Example:**
+
+```
+=== RUN: File Existence Test: Python binary exists
+--- FAIL
+duration: 0s
+Error: /usr/bin/python3 has incorrect permissions. Expected: lrwxrwxrwx, Actual: Lrwxrwxrwx
+```
+
+**Root Cause:** Container Structure Test uses Go's `os.FileMode.String()` method, which represents symbolic links with uppercase `L` instead of the standard Unix lowercase `l` used by tools like `ls -l`.
+
+**Solution:** Use uppercase `L` for symbolic links in your test files:
+
+```yaml
+# ❌ Incorrect - uses standard Unix format
+fileExistenceTests:
+  - name: 'Python binary exists'
+    path: '/usr/bin/python3'
+    shouldExist: true
+    permissions: 'lrwxrwxrwx'  # lowercase 'l' will fail
+
+# ✅ Correct - uses Container Structure Test format
+fileExistenceTests:
+  - name: 'Python binary exists'
+    path: '/usr/bin/python3'
+    shouldExist: true
+    permissions: 'Lrwxrwxrwx'  # uppercase 'L' required
+```
+
+**Note:** Go's file mode representation differs from Unix for several file types:
+
+**Container Structure Test (Go) vs Unix:**
+- `L` vs `l` for symbolic links
+- `D` vs `c`/`b` for devices  
+- `S` vs `s` for sockets
+- `p` for named pipes (same)
+- `d` for directories (same)
+- `-` for regular files (same)
+
+Most commonly encountered difference is symbolic links requiring uppercase `L`.
+
 ## Development Mode
 
 For testing and debugging Container Structure Test itself:
