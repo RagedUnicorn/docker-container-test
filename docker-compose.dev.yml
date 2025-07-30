@@ -11,7 +11,7 @@
 services:
   container-test-dev:
     build: .
-    image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}-dev
+    image: ragedunicorn/container-test:dev
     stdin_open: true
     tty: true
     # Override entrypoint to get a shell
