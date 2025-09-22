@@ -3,7 +3,7 @@
 ############################################
 FROM alpine:3.22.1 AS build
 
-ARG CONTAINER_STRUCTURE_VERSION=v1.19.3
+ARG CONTAINER_STRUCTURE_VERSION=v1.20.0
 
 LABEL org.opencontainers.image.authors="Michael Wiesendanger <michael.wiesendanger@gmail.com>" \
       org.opencontainers.image.source="https://github.com/RagedUnicorn/docker-container-test" \
@@ -24,7 +24,7 @@ RUN cd /tmp && \
 ############################################
 FROM alpine:3.22.1
 
-ARG CONTAINER_STRUCTURE_VERSION=v1.19.3
+ARG CONTAINER_STRUCTURE_VERSION=v1.20.0
 ARG BUILD_DATE
 ARG VERSION
 
