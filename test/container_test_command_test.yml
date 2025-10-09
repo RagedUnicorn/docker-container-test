@@ -4,7 +4,7 @@ commandTests:
   - name: 'Container Structure Test version'
     command: 'container-structure-test'
     args: ['version']
-    expectedOutput: ['1.19.3']
+    expectedOutput: ['1.21.1']
     exitCode: 0
   - name: 'Container Structure Test help'
     command: 'container-structure-test'
