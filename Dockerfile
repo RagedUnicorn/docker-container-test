@@ -1,7 +1,7 @@
 ############################################
 # Container Structure Test build stage
 ############################################
-FROM alpine:3.22.2 AS build
+FROM alpine:3.23.0 AS build
 
 ARG CONTAINER_STRUCTURE_VERSION=v1.22.0
 
@@ -22,7 +22,7 @@ RUN cd /tmp && \
 ############################################
 # Runtime stage
 ############################################
-FROM alpine:3.22.2
+FROM alpine:3.23.0
 
 ARG CONTAINER_STRUCTURE_VERSION=v1.22.0
 ARG BUILD_DATE
