@@ -103,7 +103,13 @@ See [TEST.md](TEST.md) for detailed testing information.
 This project uses [Renovate](https://docs.renovatebot.com/) to automatically manage dependency updates:
 
 - **Container Structure Test**: Renovate monitors GitHub releases and creates PRs for new versions
-- **Alpine Linux**: Renovate monitors Docker Hub and creates PRs for new Alpine versions
+- **Alpine Linux**: Renovate monitors Docker Hub and creates PRs for new Alpine versions.
+  In addition to the `FROM` lines (tracked natively by the Docker datasource),
+  regex `customManagers` in `renovate.json` keep the
+  `org.opencontainers.image.base.name` label in the Dockerfile and the Alpine
+  value in `test/container_test_metadata_test.yml` in sync with the `FROM`
+  version. Because all three references resolve to the same `alpine` dependency,
+  they update together in a single PR per bump.
 
 When Renovate creates a PR:
 
@@ -112,7 +118,10 @@ When Renovate creates a PR:
 3. Test the build locally if it's a major version update
 4. Merge the PR if everything looks good
 
-Manual version updates are rarely needed, but if required:
+Manual version updates are rarely needed, but if required, update every Alpine
+reference together — both `FROM` lines, the `org.opencontainers.image.base.name`
+label, and the value in `test/container_test_metadata_test.yml` — since they are
+otherwise only kept in sync automatically by Renovate:
 
 ```dockerfile
 # Container Structure Test version

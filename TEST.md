@@ -371,6 +371,13 @@ These Alpine tests demonstrate how to test any Docker image and can be used as t
    - The `org.opencontainers.image.version` label changes with each build
    - Build date labels are dynamic
 
+4. **Alpine version drift**
+   - Renovate keeps the `FROM` lines, the `org.opencontainers.image.base.name`
+     label, and the matching value in `test/container_test_metadata_test.yml` in
+     sync via `customManagers` in `renovate.json`
+   - Only a manual edit that touches one of these spots without the others can
+     cause drift between the base image and the metadata test
+
 **Solution:** Always build and test locally before pushing:
 
 ```bash
