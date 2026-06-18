@@ -1,7 +1,7 @@
 ############################################
 # Container Structure Test build stage
 ############################################
-FROM alpine:3.24.0 AS build
+FROM alpine:3.24.1 AS build
 
 ARG CONTAINER_STRUCTURE_VERSION=v1.22.1
 
@@ -22,7 +22,7 @@ RUN cd /tmp && \
 ############################################
 # Runtime stage
 ############################################
-FROM alpine:3.24.0
+FROM alpine:3.24.1
 
 ARG CONTAINER_STRUCTURE_VERSION=v1.22.1
 ARG BUILD_DATE
@@ -37,7 +37,7 @@ LABEL org.opencontainers.image.title="Container Structure Test on Alpine Linux" 
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.0"
+      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.1"
 
 # Install runtime dependencies only
 RUN apk add --no-cache --update \
