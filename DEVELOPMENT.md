@@ -28,7 +28,8 @@ docker-container-test/
 │       └── alpine_metadata_test.yml
 └── docs/                   # Documentation assets
     ├── alpine_linux_logo.svg
-    ├── docker_container_test.png
+    ├── docker_container_test_banner.png
+    ├── docker_container_test_banner.svg
     └── license_badge.svg
 ```
 

@@ -1,6 +1,6 @@
 # Container Structure Test Alpine Docker Image
 
-![Docker Container Test](https://raw.githubusercontent.com/RagedUnicorn/docker-container-test/master/docs/docker_container_test.png)
+![Docker Container Test](https://raw.githubusercontent.com/RagedUnicorn/docker-container-test/master/docs/docker_container_test_banner.png)
 
 A lightweight Google Container Structure Test installation on Alpine Linux for automated Docker image validation.
 
