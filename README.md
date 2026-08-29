@@ -1,6 +1,6 @@
 # docker-container-test
 
-![](./docs/docker_container_test.png)
+![](./docs/docker_container_test_banner.svg)
 
 [![Release Build](https://github.com/RagedUnicorn/docker-container-test/actions/workflows/docker_release.yml/badge.svg)](https://github.com/RagedUnicorn/docker-container-test/actions/workflows/docker_release.yml)
 ![License: MIT](docs/license_badge.svg)
