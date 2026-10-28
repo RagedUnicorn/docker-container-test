@@ -33,7 +33,7 @@ Run self-tests with:
 docker compose -f docker-compose.test.yml run test-all
 
 # Test a specific version
-CONTAINER_STRUCTURE_TEST_VERSION=1.19.3-alpine3.22.1-1 docker compose -f docker-compose.test.yml run test-all
+CONTAINER_TEST_SELF_VERSION=1.19.3-alpine3.22.1-1 docker compose -f docker-compose.test.yml run test-all
 ```
 
 ### 2. Example Tests (example/*.yml)

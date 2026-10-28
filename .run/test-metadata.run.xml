@@ -6,7 +6,7 @@
         <option name="envVars">
           <list>
             <DockerEnvVarImpl>
-              <option name="name" value="CONTAINER_STRUCTURE_TEST_VERSION" />
+              <option name="name" value="CONTAINER_TEST_SELF_VERSION" />
               <option name="value" value="test" />
             </DockerEnvVarImpl>
           </list>

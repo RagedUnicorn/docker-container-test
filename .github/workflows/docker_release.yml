@@ -30,7 +30,7 @@ jobs:
           echo "::notice title=🧪 Running Tests::Validating Docker image before release..."
           
           echo "::group::Running all Container Structure Tests"
-          CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run --rm test-all
+          CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml run --rm test-all
           echo "::endgroup::"
           
           echo "::notice title=✅ Tests Passed::All Container Structure Tests completed successfully!"

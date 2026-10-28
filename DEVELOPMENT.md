@@ -87,10 +87,10 @@ After making changes, always run the test suite:
 docker build -t ragedunicorn/container-test:test .
 
 # Test the Container Structure Test image itself
-CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
+CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml run test-all
 
 # Test a specific functionality
-CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
+CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
 ```
 
 **Important**: Always test with locally built images. Docker Hub and GitHub Container Registry may override certain labels during automated builds, which can cause metadata tests to fail with registry-pulled images.

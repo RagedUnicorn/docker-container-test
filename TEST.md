@@ -132,14 +132,14 @@ docker build -t ragedunicorn/container-test:test .
 
 ```bash
 # Run tests against your local build
-CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
+CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Run tests against your local build
-$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:CONTAINER_TEST_SELF_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Why local testing is important:**
@@ -163,14 +163,14 @@ docker compose -f docker-compose.test.yml run test-all
 
 ```bash
 docker build -t ragedunicorn/container-test:test .
-CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
+CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 docker build -t ragedunicorn/container-test:test .
-$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:CONTAINER_TEST_SELF_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ### Test Execution
@@ -181,21 +181,21 @@ Run all tests against your local build:
 
 ```bash
 # Ensure you've built locally first!
-CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
+CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Ensure you've built locally first!
-$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:CONTAINER_TEST_SELF_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (Command Prompt):**
 
 ```cmd
 # Ensure you've built locally first!
-set CONTAINER_STRUCTURE_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
+set CONTAINER_TEST_SELF_VERSION=test && docker compose -f docker-compose.test.yml run test-all
 ```
 
 Run specific test categories:
@@ -204,26 +204,26 @@ Run specific test categories:
 
 ```bash
 # File structure tests
-CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test
+CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml up container-test
 
 # Command execution tests
-CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
+CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
 
 # Metadata and label tests
-CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata
+CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # File structure tests
-$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test
+$env:CONTAINER_TEST_SELF_VERSION="test"; docker compose -f docker-compose.test.yml up container-test
 
 # Command execution tests
-$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
+$env:CONTAINER_TEST_SELF_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
 
 # Metadata and label tests
-$env:CONTAINER_STRUCTURE_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-metadata
+$env:CONTAINER_TEST_SELF_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-metadata
 ```
 
 ### Testing Different Versions
@@ -239,14 +239,14 @@ docker build -t ragedunicorn/container-test:1.19.3-alpine3.22.1-1 .
 
 ```bash
 # Test that specific version
-CONTAINER_STRUCTURE_TEST_VERSION=1.19.3-alpine3.22.1-1 docker compose -f docker-compose.test.yml run test-all
+CONTAINER_TEST_SELF_VERSION=1.19.3-alpine3.22.1-1 docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Test that specific version
-$env:CONTAINER_STRUCTURE_TEST_VERSION="1.19.3-alpine3.22.1-1"; docker compose -f docker-compose.test.yml run test-all
+$env:CONTAINER_TEST_SELF_VERSION="1.19.3-alpine3.22.1-1"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ### Using Docker Compose
@@ -360,7 +360,7 @@ These Alpine tests demonstrate how to test any Docker image and can be used as t
 
 1. **Testing remote images instead of local builds**
    - Remote images (Docker Hub, GHCR) have labels overridden by CI/CD
-   - Always test your local builds with `CONTAINER_STRUCTURE_TEST_VERSION=test`
+   - Always test your local builds with `CONTAINER_TEST_SELF_VERSION=test`
 
 2. **Label value mismatches**
    - CI/CD systems may capitalize values (e.g., "RagedUnicorn" vs "ragedunicorn")
@@ -382,7 +382,7 @@ These Alpine tests demonstrate how to test any Docker image and can be used as t
 
 ```bash
 docker build -t ragedunicorn/container-test:test .
-CONTAINER_STRUCTURE_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
+CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 ### Image Not Found
