@@ -21,6 +21,19 @@
     },
     {
       "customType": "regex",
+      "description": "Keep the Container Structure Test version in the command test in sync with the Dockerfile ARG",
+      "managerFilePatterns": [
+        "/^test/container_test_command_test\\.yml$/"
+      ],
+      "matchStrings": [
+        "expectedOutput: \\['(?<currentValue>\\d+\\.\\d+\\.\\d+)'\\]"
+      ],
+      "depNameTemplate": "GoogleContainerTools/container-structure-test",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
       "description": "Keep the Alpine base.name OCI label in the Dockerfile in sync with the FROM version",
       "managerFilePatterns": [
         "/^Dockerfile$/"

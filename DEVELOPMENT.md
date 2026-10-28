@@ -103,7 +103,11 @@ See [TEST.md](TEST.md) for detailed testing information.
 
 This project uses [Renovate](https://docs.renovatebot.com/) to automatically manage dependency updates:
 
-- **Container Structure Test**: Renovate monitors GitHub releases and creates PRs for new versions
+- **Container Structure Test**: Renovate monitors GitHub releases and creates PRs for new versions.
+  A regex `customManager` keeps the version assertion in
+  `test/container_test_command_test.yml` in sync with the Dockerfile
+  `CONTAINER_STRUCTURE_VERSION` ARG (same `GoogleContainerTools/container-structure-test`
+  dependency), so both update in a single PR per bump; bump it by hand on a manual update.
 - **Alpine Linux**: Renovate monitors Docker Hub and creates PRs for new Alpine versions.
   In addition to the `FROM` lines (tracked natively by the Docker datasource),
   regex `customManagers` in `renovate.json` keep the
