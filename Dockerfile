@@ -3,6 +3,7 @@
 ############################################
 FROM alpine:3.24.3 AS build
 
+# renovate: datasource=github-releases depName=GoogleContainerTools/container-structure-test
 ARG CONTAINER_STRUCTURE_VERSION=v1.22.1
 # Set by buildx per target platform (amd64, arm64) - matches the upstream asset suffix
 ARG TARGETARCH
@@ -37,6 +38,7 @@ RUN set -eux; \
 ############################################
 FROM alpine:3.24.3
 
+# renovate: datasource=github-releases depName=GoogleContainerTools/container-structure-test
 ARG CONTAINER_STRUCTURE_VERSION=v1.22.1
 ARG BUILD_DATE
 ARG VERSION

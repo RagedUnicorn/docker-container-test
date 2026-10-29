@@ -1,24 +1,20 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "github>RagedUnicorn/renovate-config"
   ],
-  "schedule": [
-    "on monday"
-  ],
-  "timezone": "UTC",
-  "customManagers": [
+  "packageRules": [
     {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/^Dockerfile$/"
+      "matchDatasources": [
+        "docker"
       ],
-      "matchStrings": [
-        "ARG CONTAINER_STRUCTURE_VERSION=(?<currentValue>.*?)\\n"
+      "matchPackageNames": [
+        "alpine"
       ],
-      "depNameTemplate": "GoogleContainerTools/container-structure-test",
-      "datasourceTemplate": "github-releases"
-    },
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
+    }
+  ],
+  "customManagers": [
     {
       "customType": "regex",
       "description": "Keep the Container Structure Test version in the command test in sync with the Dockerfile ARG",
@@ -31,32 +27,6 @@
       "depNameTemplate": "GoogleContainerTools/container-structure-test",
       "datasourceTemplate": "github-releases",
       "extractVersionTemplate": "^v(?<version>.*)$"
-    },
-    {
-      "customType": "regex",
-      "description": "Keep the Alpine base.name OCI label in the Dockerfile in sync with the FROM version",
-      "managerFilePatterns": [
-        "/^Dockerfile$/"
-      ],
-      "datasourceTemplate": "docker",
-      "depNameTemplate": "alpine",
-      "versioningTemplate": "docker",
-      "matchStrings": [
-        "image\\.base\\.name=\"docker\\.io/library/alpine:(?<currentValue>[^\"]+)\""
-      ]
-    },
-    {
-      "customType": "regex",
-      "description": "Keep the Alpine version in the metadata test in sync with the FROM version",
-      "managerFilePatterns": [
-        "/^test/container_test_metadata_test\\.yml$/"
-      ],
-      "datasourceTemplate": "docker",
-      "depNameTemplate": "alpine",
-      "versioningTemplate": "docker",
-      "matchStrings": [
-        "docker\\.io/library/alpine:(?<currentValue>[^']+)'"
-      ]
     },
     {
       "customType": "regex",
@@ -85,34 +55,6 @@
       ]
     }
   ],
-  "ignorePaths": [
-    "docker-compose.yml",
-    "docker-compose.dev.yml",
-    "docker-compose.test.yml"
-  ],
-  "labels": [
-    "dependencies",
-    "renovate"
-  ],
   "commitMessagePrefix": "chore(deps):",
-  "prConcurrentLimit": 2,
-  "prCreation": "immediate",
-  "automerge": false,
-  "packageRules": [
-    {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "alpine"
-      ],
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
-    },
-    {
-      "matchDatasources": [
-        "docker"
-      ],
-      "pinDigests": false
-    }
-  ]
+  "prConcurrentLimit": 2
 }
