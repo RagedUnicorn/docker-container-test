@@ -23,7 +23,7 @@ services:
   container-test:
     image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     volumes:
-        - ./test/:/test
+        - ./test/:/test:ro
         - /var/run/docker.sock:/var/run/docker.sock
     command: ["--image", "[image_to_test]", "--config", "/test/[application_test].yml"]
     labels:
@@ -34,7 +34,7 @@ services:
   container-test-metadata:
     image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     volumes:
-        - ./test/:/test
+        - ./test/:/test:ro
         - /var/run/docker.sock:/var/run/docker.sock
     command: ["--image", "[image_to_test]", "--config", "/test/[application_metadata_test].yml"]
     labels:
@@ -46,7 +46,7 @@ services:
   container-test-command:
     image: ragedunicorn/container-test:${CONTAINER_STRUCTURE_TEST_VERSION:-latest}
     volumes:
-        - ./test/:/test
+        - ./test/:/test:ro
         - /var/run/docker.sock:/var/run/docker.sock
     command: ["--image", "[image_to_test]", "--config", "/test/[application_command_test].yml"]
     labels:
