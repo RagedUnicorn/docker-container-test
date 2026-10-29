@@ -16,9 +16,20 @@ RUN apk add --no-cache --update \
     ca-certificates \
     wget
 
-# Download Container Structure Test binary
-RUN cd /tmp && \
-    wget -O container-structure-test https://github.com/GoogleContainerTools/container-structure-test/releases/download/${CONTAINER_STRUCTURE_VERSION}/container-structure-test-linux-${TARGETARCH} && \
+# Download the Container Structure Test binary, then verify it before use:
+#   verify the binary's checksum against the published checksums.txt
+# Upstream publishes NO signature (no cosign/GPG), so a SHA256 checksum is the
+# strongest verification available.
+RUN set -eux; \
+    cd /tmp; \
+    base="https://github.com/GoogleContainerTools/container-structure-test/releases/download/${CONTAINER_STRUCTURE_VERSION}"; \
+    file="container-structure-test-linux-${TARGETARCH}"; \
+    wget -O "${file}" "${base}/${file}"; \
+    wget -O checksums.txt "${base}/checksums.txt"; \
+    grep "  ${file}\$" checksums.txt > "${file}.sha256"; \
+    [ -s "${file}.sha256" ]; \
+    sha256sum -c "${file}.sha256"; \
+    mv "${file}" container-structure-test; \
     chmod +x container-structure-test
 
 ############################################
