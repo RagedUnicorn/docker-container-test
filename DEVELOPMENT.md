@@ -67,10 +67,10 @@ docker build -t ragedunicorn/container-test:dev .
 
 # Build with specific versions
 docker build \
-  --build-arg CONTAINER_STRUCTURE_VERSION=v1.19.3 \
+  --build-arg CONTAINER_STRUCTURE_VERSION=v1.22.1 \
   --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-  --build-arg VERSION=1.19.3-alpine3.22.1-1 \
-  -t ragedunicorn/container-test:1.19.3-alpine3.22.1-1 .
+  --build-arg VERSION=1.22.1-alpine3.24.3-1 \
+  -t ragedunicorn/container-test:1.22.1-alpine3.24.3-1 .
 
 # Multi-platform build (requires buildx)
 docker buildx build \
@@ -130,10 +130,10 @@ otherwise only kept in sync automatically by Renovate:
 
 ```dockerfile
 # Container Structure Test version
-ARG CONTAINER_STRUCTURE_VERSION=v1.20.0
+ARG CONTAINER_STRUCTURE_VERSION=v1.22.1
 
 # Alpine base image
-FROM alpine:3.22.1
+FROM alpine:3.24.3
 ```
 
 ### Modifying the Dockerfile

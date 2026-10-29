@@ -16,7 +16,7 @@ This Docker image provides a lightweight Container Structure Test installation o
 ## Features
 
 - **Small footprint**: Minimal Alpine Linux base image
-- **Container Structure Test v1.19.3**: Latest stable version
+- **Container Structure Test**: Pinned upstream release, kept current by Renovate
 - **Docker-in-Docker support**: Can test images using the Docker socket
 - **Multi-platform**: Supports linux/amd64 and linux/arm64
 - **Ready-to-use**: Pre-configured for immediate testing
@@ -55,7 +55,7 @@ This project uses semantic versioning that matches the Docker image contents:
 **Format:** `{container-structure-test_version}-alpine{alpine_version}-{build_number}`
 
 Examples:
-- `1.19.3-alpine3.22.1-1` - Container Structure Test 1.19.3 on Alpine 3.22.1, build 1
+- `1.22.1-alpine3.24.1-1` - Container Structure Test 1.22.1 on Alpine 3.24.1, build 1
 - `latest` - Most recent stable release
 
 For detailed release process and versioning guidelines, see [RELEASE.md](RELEASE.md).

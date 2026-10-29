@@ -11,7 +11,7 @@ A lightweight Google Container Structure Test installation on Alpine Linux for a
 docker pull ragedunicorn/container-test:latest
 
 # Or pull specific version
-docker pull ragedunicorn/container-test:1.19.3-alpine3.22.1-1
+docker pull ragedunicorn/container-test:1.22.1-alpine3.24.1-1
 
 # Run tests on an image
 docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
@@ -21,7 +21,7 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
 ## Features
 
 - 🚀 **Small footprint**: Minimal Alpine Linux base image
-- 📦 **Container Structure Test v1.19.3**: Latest stable version
+- 📦 **Container Structure Test**: Pinned upstream release, kept current by Renovate
 - 🔍 **Comprehensive testing**: Validate file existence, command outputs, and metadata
 - 🏗️ **Multi-platform**: Supports linux/amd64 and linux/arm64
 - 🐳 **Docker-in-Docker**: Tests images through Docker socket mounting
@@ -93,10 +93,10 @@ This image uses semantic versioning that includes all component versions:
 
 ### Version Examples
 
-- `1.19.3-alpine3.22.1-1` - Initial release with Container Structure Test 1.19.3 and Alpine 3.22.1
-- `1.19.3-alpine3.22.1-2` - Rebuild of same versions (bug fixes, optimizations)
-- `1.19.3-alpine3.22.2-1` - Alpine Linux patch update
-- `1.20.0-alpine3.22.1-1` - Container Structure Test version update
+- `1.22.1-alpine3.24.1-1` - Container Structure Test 1.22.1 on Alpine 3.24.1, build 1
+- `1.22.1-alpine3.24.1-2` - Rebuild of same versions (bug fixes, optimizations)
+- `1.22.1-alpine3.24.3-1` - Alpine Linux patch update
+- `1.23.0-alpine3.24.3-1` - Container Structure Test version update
 
 ## Platform Support
 

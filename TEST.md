@@ -232,21 +232,21 @@ When testing different versions, always build locally first:
 
 ```bash
 # Build a specific version locally
-docker build -t ragedunicorn/container-test:1.19.3-alpine3.22.1-1 .
+docker build -t ragedunicorn/container-test:1.22.1-alpine3.24.1-1 .
 ```
 
 **Linux/macOS:**
 
 ```bash
 # Test that specific version
-CONTAINER_TEST_SELF_VERSION=1.19.3-alpine3.22.1-1 docker compose -f docker-compose.test.yml run test-all
+CONTAINER_TEST_SELF_VERSION=1.22.1-alpine3.24.1-1 docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Test that specific version
-$env:CONTAINER_TEST_SELF_VERSION="1.19.3-alpine3.22.1-1"; docker compose -f docker-compose.test.yml run test-all
+$env:CONTAINER_TEST_SELF_VERSION="1.22.1-alpine3.24.1-1"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ### Using Docker Compose
@@ -286,14 +286,14 @@ The provided `docker-compose.test.yml` is pre-configured to test the container-t
 
 ```shell
 docker run -v //var/run/docker.sock:/var/run/docker.sock -v ${PWD}/test:/test \
-  ragedunicorn/container-test:1.19.3-alpine3.22.1-1 --image [image] --config /test/[test].yml
+  ragedunicorn/container-test:1.22.1-alpine3.24.1-1 --image [image] --config /test/[test].yml
 ```
 
 #### Unix/Linux/macOS
 
 ```shell
 docker run -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/test:/test \
-  ragedunicorn/container-test:1.19.3-alpine3.22.1-1 --image [image] --config /test/[test].yml
+  ragedunicorn/container-test:1.22.1-alpine3.24.1-1 --image [image] --config /test/[test].yml
 ```
 
 ## Advanced Options

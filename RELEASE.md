@@ -6,8 +6,8 @@ This document describes how to create a new release for the Docker Container Tes
 
 ```bash
 # Tag format: v{container-structure-test_version}-alpine{alpine_version}-{build_number}
-git tag -a v1.19.3-alpine3.22.1-1 -m "v1.19.3-alpine3.22.1-1"
-git push origin v1.19.3-alpine3.22.1-1
+git tag -a v1.22.1-alpine3.24.1-1 -m "v1.22.1-alpine3.24.1-1"
+git push origin v1.22.1-alpine3.24.1-1
 ```
 
 This automatically triggers the release process via GitHub Actions.
@@ -17,10 +17,10 @@ This automatically triggers the release process via GitHub Actions.
 **Format:** `v{container-structure-test_version}-alpine{alpine_version}-{build_number}`
 
 Examples:
-- `v1.19.3-alpine3.22.1-1` - Initial release
-- `v1.19.3-alpine3.22.1-2` - Rebuild with same versions
-- `v1.19.3-alpine3.22.2-1` - Alpine update (build resets to 1)
-- `v1.20.0-alpine3.22.1-1` - Container Structure Test update (build resets to 1)
+- `v1.22.1-alpine3.24.1-1` - Initial release
+- `v1.22.1-alpine3.24.1-2` - Rebuild with same versions
+- `v1.22.1-alpine3.24.3-1` - Alpine update (build resets to 1)
+- `v1.23.0-alpine3.24.3-1` - Container Structure Test update (build resets to 1)
 
 ## Release Workflow
 
@@ -79,7 +79,7 @@ Use conventional commit format for better changelogs:
 Example:
 
 ```bash
-git commit -m "feat: update to Container Structure Test v1.19.3"
+git commit -m "feat: update to Container Structure Test v1.22.1"
 git commit -m "fix: resolve permission issues with Docker socket"
 git commit -m "docs: update test examples for new version"
 ```
@@ -97,7 +97,7 @@ Before creating a release:
 
 ### Release didn't trigger
 
-- Ensure tag starts with `v` and follows the format (e.g., `v1.19.3-alpine3.22.1-1`)
+- Ensure tag starts with `v` and follows the format (e.g., `v1.22.1-alpine3.24.1-1`)
 - Check GitHub Actions tab for workflow runs
 - Verify you have push permissions
 
@@ -137,12 +137,12 @@ If automation fails, you can create a release manually:
 
 1. Go to repository's "Releases" page
 2. Click "Create a new release"
-3. Choose your tag (must follow format: `v1.19.3-alpine3.22.1-1`)
+3. Choose your tag (must follow format: `v1.22.1-alpine3.24.1-1`)
 4. Add release notes
 5. Include Docker pull commands:
    ```
-   docker pull ghcr.io/ragedunicorn/docker-container-test:1.19.3-alpine3.22.1-1
-   docker pull ragedunicorn/container-test:1.19.3-alpine3.22.1-1
+   docker pull ghcr.io/ragedunicorn/docker-container-test:1.22.1-alpine3.24.1-1
+   docker pull ragedunicorn/container-test:1.22.1-alpine3.24.1-1
    ```
 
 ## Checking for Updates
