@@ -52,6 +52,18 @@ jobs:
           docker run --rm --platform linux/arm64 --entrypoint container-structure-test ragedunicorn/container-test:test-arm64 version
           echo "::endgroup::"
 
+          # An amd64 binary in the arm64 image would still run natively on the
+          # amd64 runner, so also assert the ELF e_machine of the
+          # container-structure-test binary is aarch64 (0xb7)
+          echo "::group::Checking container-structure-test binary architecture"
+          MACHINE=$(docker run --rm --platform linux/arm64 --entrypoint od ragedunicorn/container-test:test-arm64 -An -tx1 -j18 -N2 /usr/bin/container-structure-test | tr -d ' \n')
+          echo "e_machine: $MACHINE"
+          if [ "$MACHINE" != "b700" ]; then
+            echo "::error title=❌ Wrong Architecture::/usr/bin/container-structure-test in the arm64 image is not an aarch64 binary (e_machine=$MACHINE)"
+            exit 1
+          fi
+          echo "::endgroup::"
+
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
