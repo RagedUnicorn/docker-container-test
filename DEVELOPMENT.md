@@ -214,20 +214,20 @@ docker build --target build -t container-test-build-stage .
 
 ```bash
 # Check if binary was downloaded correctly
-docker run --rm --entrypoint sh ragedunicorn/container-test:dev -c "ls -la /usr/local/bin/"
+docker run --rm --entrypoint sh ragedunicorn/container-test:dev -c "ls -la /usr/bin/container-structure-test"
 
-# Check binary architecture
-docker run --rm --entrypoint sh ragedunicorn/container-test:dev -c "file /usr/local/bin/container-structure-test"
+# Check binary architecture (file is not part of the runtime image, so install it first)
+docker run --rm --entrypoint sh ragedunicorn/container-test:dev -c "apk add --no-cache -q file && file /usr/bin/container-structure-test"
 ```
 
 **Permission issues:**
 
 ```bash
 # Check file permissions
-docker run --rm --entrypoint sh ragedunicorn/container-test:dev -c "stat /usr/local/bin/container-structure-test"
+docker run --rm --entrypoint sh ragedunicorn/container-test:dev -c "stat /usr/bin/container-structure-test"
 
 # Test execution directly
-docker run --rm --entrypoint sh ragedunicorn/container-test:dev -c "/usr/local/bin/container-structure-test version"
+docker run --rm --entrypoint sh ragedunicorn/container-test:dev -c "/usr/bin/container-structure-test version"
 ```
 
 ### Debugging Container Structure Test Issues
