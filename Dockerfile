@@ -4,6 +4,8 @@
 FROM alpine:3.24.3 AS build
 
 ARG CONTAINER_STRUCTURE_VERSION=v1.22.1
+# Set by buildx per target platform (amd64, arm64) - matches the upstream asset suffix
+ARG TARGETARCH
 
 LABEL org.opencontainers.image.authors="Michael Wiesendanger <michael.wiesendanger@gmail.com>" \
       org.opencontainers.image.source="https://github.com/RagedUnicorn/docker-container-test" \
@@ -16,7 +18,7 @@ RUN apk add --no-cache --update \
 
 # Download Container Structure Test binary
 RUN cd /tmp && \
-    wget -O container-structure-test https://github.com/GoogleContainerTools/container-structure-test/releases/download/${CONTAINER_STRUCTURE_VERSION}/container-structure-test-linux-amd64 && \
+    wget -O container-structure-test https://github.com/GoogleContainerTools/container-structure-test/releases/download/${CONTAINER_STRUCTURE_VERSION}/container-structure-test-linux-${TARGETARCH} && \
     chmod +x container-structure-test
 
 ############################################

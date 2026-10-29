@@ -34,6 +34,22 @@ jobs:
           echo "::endgroup::"
           
           echo "::notice title=✅ Tests Passed::All Container Structure Tests completed successfully!"
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+      - name: Build arm64 test image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/arm64
+          load: true
+          tags: ragedunicorn/container-test:test-arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Smoke test arm64 image
+        run: |
+          echo "::group::Running arm64 binary under QEMU"
+          docker run --rm --platform linux/arm64 --entrypoint container-structure-test ragedunicorn/container-test:test-arm64 version
+          echo "::endgroup::"
 
   build-and-push:
     needs: test
