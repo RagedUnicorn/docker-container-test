@@ -42,6 +42,45 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
 docker compose -f docker-compose.test.yml run test-all
 ```
 
+On Windows, use the PowerShell form:
+
+```powershell
+# Test an image with a single test file
+docker run -v //var/run/docker.sock:/var/run/docker.sock -v "${PWD}/test:/test" `
+  ragedunicorn/container-test:latest --image nginx:latest --config /test/nginx_test.yml
+
+# Run all tests using Docker Compose
+docker compose -f docker-compose.test.yml run test-all
+```
+
+Write `${PWD}` **with braces** and keep the whole mount inside the quotes, and
+mount the Docker socket as `//var/run/docker.sock` - Docker Desktop exposes its
+Linux engine socket under that path on Windows too. See the
+[Windows (PowerShell) notes](#windows-powershell-notes) for details.
+
+### Windows (PowerShell) notes
+
+The PowerShell variants differ from the bash ones in two ways: the test mount is
+written `-v "${PWD}/test:/test"` instead of `-v $(pwd)/test:/test`, and the
+backtick replaces `\` as the line-continuation character.
+
+The mount spelling matters:
+
+- Pasting the bash form into PowerShell breaks: `$(pwd)/test:/test` reaches
+  Docker as two arguments (`C:\path` and `/test:/test`), so Docker takes
+  `/test:/test` as the image name and fails with `invalid reference format`.
+- `"$PWD:/test"` without braces is a parse error: PowerShell reads a colon after
+  a variable as a scope qualifier (as in `$env:PATH`).
+- `"${PWD}/test:/test"` works: the braces end the variable name at `PWD`, and
+  Docker splits the resulting `C:\path/test:/test` into host and container path
+  because it recognises the `C:` drive prefix. Append `:ro` inside the quotes for
+  a read-only mount.
+
+The Docker socket is a path inside Docker Desktop's Linux VM, not a Windows
+path. `//var/run/docker.sock` is the portable spelling: it also survives Git
+Bash, which would otherwise rewrite a single-slash `/var/run/docker.sock` into a
+Windows path. In PowerShell the single-slash form works as well.
+
 For comprehensive testing documentation including examples, troubleshooting, and CI/CD integration, see [TEST.md](TEST.md).
 
 ## Development

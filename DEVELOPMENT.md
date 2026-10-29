@@ -78,20 +78,67 @@ docker buildx build \
   -t ragedunicorn/container-test:dev .
 ```
 
+PowerShell:
+
+```powershell
+# Basic build
+docker build -t ragedunicorn/container-test:dev .
+
+# Build with specific versions
+docker build `
+  --build-arg CONTAINER_STRUCTURE_VERSION=v1.22.1 `
+  --build-arg BUILD_DATE=$((Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')) `
+  --build-arg VERSION=1.22.1-alpine3.24.3-1 `
+  -t ragedunicorn/container-test:1.22.1-alpine3.24.3-1 .
+
+# Multi-platform build (requires buildx)
+docker buildx build `
+  --platform linux/amd64,linux/arm64 `
+  -t ragedunicorn/container-test:dev .
+```
+
 ### 3. Testing Your Changes
 
-After making changes, always run the test suite:
+After making changes, always build the image locally first:
 
 ```bash
-# Build the image locally first
 docker build -t ragedunicorn/container-test:test .
+```
 
+#### Running Tests (Cross-Platform)
+
+**Linux/macOS:**
+
+```bash
 # Test the Container Structure Test image itself
 CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml run test-all
 
 # Test a specific functionality
 CONTAINER_TEST_SELF_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
 ```
+
+**Windows (PowerShell):**
+
+```powershell
+# Test the Container Structure Test image itself
+$env:CONTAINER_TEST_SELF_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+
+# Test a specific functionality
+$env:CONTAINER_TEST_SELF_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
+```
+
+**Windows (Command Prompt):**
+
+```cmd
+set "CONTAINER_TEST_SELF_VERSION=test" && docker compose -f docker-compose.test.yml run test-all
+```
+
+Keep the quotes around the assignment - without them `set` stores the space
+before `&&` as part of the value and the image tag becomes `test `.
+
+The compose file mounts the Docker socket as `/var/run/docker.sock`, which
+Docker Desktop resolves inside its Linux VM, so the same file works unchanged on
+Windows hosts.
 
 **Important**: Always test with locally built images. Docker Hub and GitHub Container Registry may override certain labels during automated builds, which can cause metadata tests to fail with registry-pulled images.
 
@@ -248,6 +295,19 @@ docker run --rm -v $(pwd)/test:/test \
   ragedunicorn/container-test:dev \
   test --config /test/example/alpine_test.yml --dry-run
 ```
+
+PowerShell:
+
+```powershell
+# Run with debug output
+docker run --rm -v //var/run/docker.sock:/var/run/docker.sock -v "${PWD}/test:/test" `
+  ragedunicorn/container-test:dev `
+  test --image alpine:latest --config /test/example/alpine_test.yml --verbosity debug
+```
+
+See the [Windows (PowerShell) notes](README.md#windows-powershell-notes) in the
+README for why the mount is written `"${PWD}/test:/test"` and the socket
+`//var/run/docker.sock`.
 
 ## Contributing
 
