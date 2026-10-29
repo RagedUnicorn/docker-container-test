@@ -10,7 +10,7 @@ commandTests:
     args: ['/etc/alpine-release']
     exitCode: 0
     expectedOutput:
-      - '3.22.1'
+      - '3.24.3'
   - name: 'Environment variables'
     command: 'env'
     exitCode: 0

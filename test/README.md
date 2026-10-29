@@ -50,7 +50,7 @@ Run example tests with:
 # Direct execution
 docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/test:ro \
   ragedunicorn/container-test:latest \
-  --pull --image alpine:3.22.1 --config /test/example/alpine_test.yml
+  --pull --image alpine:3.24.3 --config /test/example/alpine_test.yml
 
 # Using docker compose (replace docker-compose.test.yml)
 cp docker-compose.test.template docker-compose.test.yml

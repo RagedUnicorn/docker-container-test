@@ -57,6 +57,32 @@
       "matchStrings": [
         "docker\\.io/library/alpine:(?<currentValue>[^']+)'"
       ]
+    },
+    {
+      "customType": "regex",
+      "description": "Keep the Alpine version in the example command test in sync with the FROM version",
+      "managerFilePatterns": [
+        "/^test/example/alpine_command_test\\.yml$/"
+      ],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "alpine",
+      "versioningTemplate": "docker",
+      "matchStrings": [
+        "args: \\['/etc/alpine-release'\\]\\s+exitCode: 0\\s+expectedOutput:\\s+- '(?<currentValue>[^']+)'"
+      ]
+    },
+    {
+      "customType": "regex",
+      "description": "Keep the Alpine image in the test README example command in sync with the FROM version",
+      "managerFilePatterns": [
+        "/^test/README\\.md$/"
+      ],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "alpine",
+      "versioningTemplate": "docker",
+      "matchStrings": [
+        "--image alpine:(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ]
     }
   ],
   "ignorePaths": [
