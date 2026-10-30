@@ -93,9 +93,12 @@ This project uses semantic versioning that matches the Docker image contents:
 
 **Format:** `{container-structure-test_version}-alpine{alpine_version}-{build_number}`
 
-Examples:
-- `1.22.1-alpine3.24.1-1` - Container Structure Test 1.22.1 on Alpine 3.24.1, build 1
+Examples (`X.Y.Z` is the Container Structure Test version, `A.B.C` the Alpine version):
+- `X.Y.Z-alpineA.B.C-1` - Container Structure Test X.Y.Z on Alpine A.B.C, build 1
 - `latest` - Most recent stable release
+
+The current tags are listed on [Docker Hub](https://hub.docker.com/r/ragedunicorn/container-test/tags) and in the
+[GitHub releases](https://github.com/RagedUnicorn/docker-container-test/releases).
 
 For detailed release process and versioning guidelines, see [RELEASE.md](RELEASE.md).
 

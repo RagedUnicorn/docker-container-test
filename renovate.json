@@ -40,19 +40,6 @@
       "matchStrings": [
         "args: \\['/etc/alpine-release'\\]\\s+exitCode: 0\\s+expectedOutput:\\s+- '(?<currentValue>[^']+)'"
       ]
-    },
-    {
-      "customType": "regex",
-      "description": "Keep the Alpine image in the test README example command in sync with the FROM version",
-      "managerFilePatterns": [
-        "/^test/README\\.md$/"
-      ],
-      "datasourceTemplate": "docker",
-      "depNameTemplate": "alpine",
-      "versioningTemplate": "docker",
-      "matchStrings": [
-        "--image alpine:(?<currentValue>\\d+\\.\\d+\\.\\d+)"
-      ]
     }
   ],
   "commitMessagePrefix": "chore(deps):",

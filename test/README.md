@@ -33,7 +33,7 @@ Run self-tests with:
 docker compose -f docker-compose.test.yml run test-all
 
 # Test a specific version
-CONTAINER_TEST_SELF_VERSION=1.22.1-alpine3.24.1-1 docker compose -f docker-compose.test.yml run test-all
+CONTAINER_TEST_SELF_VERSION=<tag> docker compose -f docker-compose.test.yml run test-all
 ```
 
 ### 2. Example Tests (example/*.yml)
@@ -50,7 +50,7 @@ Run example tests with:
 # Direct execution
 docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/test:ro \
   ragedunicorn/container-test:latest \
-  --pull --image alpine:3.24.3 --config /test/example/alpine_test.yml
+  --pull --image alpine:latest --config /test/example/alpine_test.yml
 
 # Using docker compose (replace docker-compose.test.yml)
 cp docker-compose.test.template docker-compose.test.yml

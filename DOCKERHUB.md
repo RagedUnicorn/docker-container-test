@@ -10,8 +10,8 @@ A lightweight Google Container Structure Test installation on Alpine Linux for a
 # Pull latest version
 docker pull ragedunicorn/container-test:latest
 
-# Or pull specific version
-docker pull ragedunicorn/container-test:1.22.1-alpine3.24.1-1
+# Or pull specific version (see the Tags tab for the available versions)
+docker pull ragedunicorn/container-test:<container-test-version>-alpine<alpine-version>-<build>
 
 # Run tests on an image
 docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/test:/test \
@@ -93,10 +93,15 @@ This image uses semantic versioning that includes all component versions:
 
 ### Version Examples
 
-- `1.22.1-alpine3.24.1-1` - Container Structure Test 1.22.1 on Alpine 3.24.1, build 1
-- `1.22.1-alpine3.24.1-2` - Rebuild of same versions (bug fixes, optimizations)
-- `1.22.1-alpine3.24.3-1` - Alpine Linux patch update
-- `1.23.0-alpine3.24.3-1` - Container Structure Test version update
+`X.Y.Z` is the Container Structure Test version, `A.B.C` the Alpine version:
+
+- `X.Y.Z-alpineA.B.C-1` - Container Structure Test X.Y.Z on Alpine A.B.C, build 1
+- `X.Y.Z-alpineA.B.C-2` - Rebuild of same versions (bug fixes, optimizations)
+- `X.Y.Z-alpineA.B.D-1` - Alpine Linux patch update
+- `X.Y+1.0-alpineA.B.C-1` - Container Structure Test version update
+- `latest` - Most recent stable release
+
+The available versions are listed in the [Tags tab](https://hub.docker.com/r/ragedunicorn/container-test/tags).
 
 ## Platform Support
 

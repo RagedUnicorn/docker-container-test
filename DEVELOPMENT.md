@@ -65,12 +65,16 @@ The development mode:
 # Basic build
 docker build -t ragedunicorn/container-test:dev .
 
-# Build with specific versions
+# Build with version metadata (Container Structure Test and Alpine come from the Dockerfile)
 docker build \
-  --build-arg CONTAINER_STRUCTURE_VERSION=v1.22.1 \
   --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-  --build-arg VERSION=1.22.1-alpine3.24.3-1 \
-  -t ragedunicorn/container-test:1.22.1-alpine3.24.3-1 .
+  --build-arg VERSION=dev \
+  -t ragedunicorn/container-test:dev .
+
+# Build a different Container Structure Test version than the Dockerfile default
+docker build \
+  --build-arg CONTAINER_STRUCTURE_VERSION=v<container-test-version> \
+  -t ragedunicorn/container-test:dev .
 
 # Multi-platform build (requires buildx)
 docker buildx build \
@@ -84,12 +88,16 @@ PowerShell:
 # Basic build
 docker build -t ragedunicorn/container-test:dev .
 
-# Build with specific versions
+# Build with version metadata (Container Structure Test and Alpine come from the Dockerfile)
 docker build `
-  --build-arg CONTAINER_STRUCTURE_VERSION=v1.22.1 `
   --build-arg BUILD_DATE=$((Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')) `
-  --build-arg VERSION=1.22.1-alpine3.24.3-1 `
-  -t ragedunicorn/container-test:1.22.1-alpine3.24.3-1 .
+  --build-arg VERSION=dev `
+  -t ragedunicorn/container-test:dev .
+
+# Build a different Container Structure Test version than the Dockerfile default
+docker build `
+  --build-arg CONTAINER_STRUCTURE_VERSION=v<container-test-version> `
+  -t ragedunicorn/container-test:dev .
 
 # Multi-platform build (requires buildx)
 docker buildx build `
@@ -173,15 +181,9 @@ When Renovate creates a PR:
 Manual version updates are rarely needed, but if required, update every Alpine
 reference together — both `FROM` lines, the `org.opencontainers.image.base.name`
 label, and the value in `test/container_test_metadata_test.yml` — since they are
-otherwise only kept in sync automatically by Renovate:
-
-```dockerfile
-# Container Structure Test version
-ARG CONTAINER_STRUCTURE_VERSION=v1.22.1
-
-# Alpine base image
-FROM alpine:3.24.3
-```
+otherwise only kept in sync automatically by Renovate. The current versions are
+the `CONTAINER_STRUCTURE_VERSION` ARG default and the `FROM alpine:<alpine-version>`
+lines in the `Dockerfile`, so the docs do not repeat them.
 
 ### Modifying the Dockerfile
 
