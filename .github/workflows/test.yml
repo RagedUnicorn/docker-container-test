@@ -102,17 +102,15 @@ jobs:
             docker run --rm --entrypoint container-structure-test ragedunicorn/container-test:test version
             echo ""
             echo "Testing with a real-world image (nginx:alpine)..."
+            # container-structure-test reads --config from a file only, not stdin
+            tmp=$(mktemp -d)
+            chmod 755 "$tmp"
+            printf 'schemaVersion: 2.0.0\ncommandTests:\n  - name: "nginx version"\n    command: "nginx"\n    args: ["-v"]\n    exitCode: 0\n' > "$tmp/nginx_test.yml"
             docker run --rm \
               -v /var/run/docker.sock:/var/run/docker.sock \
+              -v "$tmp":/config:ro \
               ragedunicorn/container-test:test \
-              --pull --image nginx:alpine --config - << 'EOF'
-          schemaVersion: 2.0.0
-          commandTests:
-            - name: "nginx version"
-              command: "nginx"
-              args: ["-v"]
-              exitCode: 0
-          EOF
+              --pull --image nginx:alpine --config /config/nginx_test.yml
           } 2>&1 | tee test-basic-functionality.log
           echo "::endgroup::"
 
