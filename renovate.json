@@ -42,6 +42,5 @@
       ]
     }
   ],
-  "commitMessagePrefix": "chore(deps):",
   "prConcurrentLimit": 2
 }
