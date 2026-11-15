@@ -62,6 +62,11 @@ RUN apk add --no-cache --update \
 # Copy Container Structure Test binary from build stage
 COPY --from=build /tmp/container-structure-test /usr/bin/container-structure-test
 
+# Pin the Docker API version: without it, go-dockerclient addresses image pulls
+# at the oldest version the request needs (v1.32), which Docker Engine 29+ rejects
+# (minimum 1.40). 1.40 is accepted by every engine from Docker 19.03 onward.
+ENV DOCKER_API_VERSION=1.40
+
 # Set the entrypoint to container-structure-test binary
 ENTRYPOINT ["container-structure-test", "test"]
 

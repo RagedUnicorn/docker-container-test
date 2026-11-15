@@ -3,6 +3,9 @@ schemaVersion: 2.0.0
 metadataTest:
   entrypoint: ['container-structure-test', 'test']
   workdir: '/'
+  envVars:
+    - key: 'DOCKER_API_VERSION'
+      value: '1.40'
   labels:
     - key: 'org.opencontainers.image.vendor'
       value: 'ragedunicorn'
