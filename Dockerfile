@@ -1,7 +1,7 @@
 ############################################
 # Container Structure Test build stage
 ############################################
-FROM alpine:3.24.3 AS build
+FROM alpine:3.24.4 AS build
 
 # renovate: datasource=github-releases depName=GoogleContainerTools/container-structure-test
 ARG CONTAINER_STRUCTURE_VERSION=v1.22.1
@@ -36,7 +36,7 @@ RUN set -eux; \
 ############################################
 # Runtime stage
 ############################################
-FROM alpine:3.24.3
+FROM alpine:3.24.4
 
 # renovate: datasource=github-releases depName=GoogleContainerTools/container-structure-test
 ARG CONTAINER_STRUCTURE_VERSION=v1.22.1
@@ -52,7 +52,7 @@ LABEL org.opencontainers.image.title="Container Structure Test on Alpine Linux" 
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.3"
+      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.4"
 
 # Install runtime dependencies only
 RUN apk add --no-cache --update \
